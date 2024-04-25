@@ -1,5 +1,11 @@
 import java.util.Scanner;
 
+import Naves.Acorazado;
+import Naves.Buque;
+import Naves.Nave;
+import Naves.Portaaviones;
+import Naves.Submarino;
+
 public class Main {
     public static void main(String[] args) {
 
