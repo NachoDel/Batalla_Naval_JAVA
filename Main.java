@@ -8,10 +8,15 @@ public class Main {
         switch (m) {
             case 1:
                 Scanner scanner = new Scanner(System.in);
+                int n;
+                do{
+                    System.out.println("Ingrese tamanio del tablero: ");
+                    n = scanner.nextInt();
+                    if(n<10)
+                        System.out.println("El tamanio del tablero debe ser mayor o igual a 10");
+                } while(n<10);
 
-
-                System.out.println("Ingrese tamanio del tablero: ");
-                int n = scanner.nextInt();
+            
                 Jugador j1 = new Jugador("Jugador 1", n, n);
                 Jugador j2 = new Jugador("Jugador 2", n, n);
 
