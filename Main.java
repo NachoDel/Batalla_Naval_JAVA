@@ -1,113 +1,48 @@
 import java.util.Scanner;
 
-import Naves.Acorazado;
-import Naves.Buque;
-import Naves.Nave;
-import Naves.Portaaviones;
-import Naves.Submarino;
-
 public class Main {
     public static void main(String[] args) {
 
-        /*
-         * Tablero tablero = new Tablero(10 ,10);
-         * 
-         * Nave submarino = new Nave("submarino", true,2);
-         * Nave buque = new Nave("Buque", true,4);
-         * Nave portaaviones = new Nave("Portaaviones", true,5);
-         * Nave acorazado = new Nave("Acorazado", true,6);
-         * 
-         * tablero.colocarNave(submarino, 0, 0);
-         * tablero.colocarNave(buque, 0, 4);
-         * tablero.colocarNave(portaaviones, 1, 0);
-         * tablero.colocarNave(acorazado, 1, 9);
-         * 
-         * 
-         * tablero.disparar(2, 2,1);
-         * tablero.disparar(8, 9,1);
-         * tablero.disparar(2, 2,1);
-         * tablero.disparar(2, 4,1);
-         * 
-         * tablero.mostrarTablero();
-         */
-        int n = Menu.menu();
-        switch (n) {
+
+        int m = Menu.menu();
+        switch (m) {
             case 1:
-                // Creacion del tablero
-                int f1, c1;
                 Scanner scanner = new Scanner(System.in);
-                System.out.print("Ingrese tamanio de tablero: ");
-                int x = scanner.nextInt();
-                Tablero tableroJugador1 = new Tablero(x, x);
-                tableroJugador1.mostrarTablero();
 
-                // Creacion de las Naves
-                // Submarino
-                System.out.println("Submarino - 2 casillas");
 
-                Nave submarinoJ1 = new Submarino(); // Polimorfismo (Creo un objeto de tipo submarino, como si fuese
-                                                    // tipo NAVE)
-                System.out.print("Ingrese coord iniciales para submarino: ");
-                System.out.print("Fila: ");
-                f1 = scanner.nextInt();
-                System.out.println();
-                System.out.print("Columna");
-                c1 = scanner.nextInt();
-                tableroJugador1.colocarNave(submarinoJ1, f1, c1);
-                tableroJugador1.mostrarTablero();
+                System.out.println("Ingrese tamanio del tablero: ");
+                int n = scanner.nextInt();
+                Jugador j1 = new Jugador("Jugador 1", n, n);
+                Jugador j2 = new Jugador("Jugador 2", n, n);
 
-                // Buque
-                System.out.println("Buque -> 4 casillas");
-                Nave buqueJ1 = new Buque();
-                System.out.print("Ingrese coord iniciales para buque: ");
-                System.out.print("Fila: ");
-                f1 = scanner.nextInt();
-                System.out.println();
-                System.out.print("Columna");
-                c1 = scanner.nextInt();
-                tableroJugador1.colocarNave(buqueJ1, f1, c1);
-                tableroJugador1.mostrarTablero();
+                j1.getTablero().mostrarTablero();
+                System.out.println("Colocando naves de " + j1.getNombre());
+                j1.crearYColocarNaves();
+                System.out.println("\n"+"\n"+"\n"+"\n");
 
-                // Portaaviones
-                System.out.println("Portaaviones -> 5 casillas");
-                Nave portaavionesJ1 = new Portaaviones();
-                System.out.print("Ingrese coord iniciales para Portaaviones: ");
-                System.out.print("Fila: ");
-                f1 = scanner.nextInt();
-                System.out.println();
-                System.out.print("Columna: ");
-                c1 = scanner.nextInt();
-                tableroJugador1.colocarNave(portaavionesJ1, f1, c1);
-                tableroJugador1.mostrarTablero();
+                j2.getTablero().mostrarTablero();
+                System.out.println("Colocando naves de "+ j2.getNombre());
+                j2.crearYColocarNaves();
 
-                // Acorazado
-                System.out.println("Acorazado -> 6 casillas");
-                Nave AcorazadoJ1 = new Acorazado();
-                System.out.print("Ingrese coord iniciales para Acorazado: ");
-                System.out.print("Fila: ");
-                f1 = scanner.nextInt();
-                System.out.println();
-                System.out.print("Columna");
-                c1 = scanner.nextInt();
-                tableroJugador1.colocarNave(AcorazadoJ1, f1, c1);
-                tableroJugador1.mostrarTablero();
+                System.out.println("Comienza disparando " + j1.getNombre());
 
-                // Logica encargada del juego
-                int d;
-                do {
-                    System.out.print("Ingrese Fila de disparo: ");
-                    f1 = scanner.nextInt();
-                    System.out.println();
-                    System.out.print("Ingrese Columna de disparo: ");
-                    c1 = scanner.nextInt();
-                    System.out.println();
-                    tableroJugador1.disparar(f1, c1, 1);
-                    tableroJugador1.mostrarTablero();
+                while(j1.getTablero().getNavesConVida() != 0 || j2.getTablero().getNavesConVida() != 0){
+                    do{
+                        System.out.println("Turno de disparar de " + j1.getNombre());
+                        j2.getTablero().mostrarOculto();
+                    }while(j1.disparar(j2, 1));
 
-                    System.out.print("Quiere seguir disparando?: ");
-                    d = scanner.nextInt();
-                } while (d != 0);
+                    do{
+                        System.out.println("Turno de disparar de " + j2.getNombre());
+                        j1.getTablero().mostrarOculto();
+                    }while (j2.disparar(j1, 1));
 
+                }
+                if(j2.getTablero().getNavesConVida() == 0){
+                    System.out.println("Gano " + j1.getNombre());
+                }else{
+                    System.out.println("Gano " + j2.getNombre());
+                }
                 break;
 
             default:
