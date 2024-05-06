@@ -1,4 +1,4 @@
-package Naves;
+package src.Naves;
 
 import java.util.Scanner;
 

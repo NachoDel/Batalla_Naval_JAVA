@@ -1,4 +1,6 @@
-import Naves.*;
+package src;
+
+import src.Naves.*;
 
 public class Jugador {
     private String nombre;
@@ -19,7 +21,7 @@ public class Jugador {
         return !(oponente.getTablero().getMatriz()[coord[0]][coord[1]] instanceof Agua);
     }
 
-    public void crearYColocarNaves(){
+    public void crearYColocarNaves() {
         System.out.println("Colocando submarino - 2 casillas");
         tablero.colocarNave(new Submarino());
         tablero.mostrarTablero();
@@ -37,7 +39,6 @@ public class Jugador {
         tablero.mostrarTablero();
 
     }
-
 
     public String getNombre() {
         return nombre;

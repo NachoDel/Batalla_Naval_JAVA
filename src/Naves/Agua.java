@@ -1,4 +1,4 @@
-package Naves;
+package src.Naves;
 
 public class Agua extends Nave {
 

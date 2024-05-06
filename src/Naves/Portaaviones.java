@@ -1,4 +1,4 @@
-package Naves;
+package src.Naves;
 
 public class Portaaviones extends Nave {
     // Definicion de parametros particulares de la subclase
