@@ -22,7 +22,7 @@ public class Tablero {
 
     // devuelve true si las coordenadas que se le pase como argumento estan dentro
     // del rango de la matriz
-    private boolean validarCoordenadas(int f, int c) {
+    public boolean validarCoordenadas(int f, int c) {
         if (f < 0 || f > filas || c < 0 || c > columnas) {
             return false;
         } else {
