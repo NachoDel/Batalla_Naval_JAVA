@@ -74,7 +74,7 @@ public class Tablero {
 
     // valida si alguna posicion del barco que quiero poner ya esta ocupada por otro
     // barco
-    private boolean estaOcupado(Nave nave, int filInicial, int colInicial) {
+    public boolean estaOcupado(Nave nave, int filInicial, int colInicial) {
         if (nave.esVertical()) { // si es vertical chequeo verticalmente
             for (int i = filInicial; i < filInicial + nave.getVida(); i++) {// voy iterando filas segun vida del barco
                                                                             // partiendo en coord inicial
@@ -100,7 +100,7 @@ public class Tablero {
 
     // recibe el barco y la coordenada inicial (la punta del barco), rellena con el
     // barco
-    private void rellenar(Nave nave, int filInicial, int colInicial) {
+    public void rellenar(Nave nave, int filInicial, int colInicial) {
         // si es vertical relleno verticalmente (de arriba hacia abajo)
         if (nave.esVertical()) {
             for (int i = filInicial; i < filInicial + nave.getVida(); i++) {// voy iterando filas

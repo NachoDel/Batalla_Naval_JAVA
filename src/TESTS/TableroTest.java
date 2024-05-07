@@ -55,8 +55,35 @@ public class TableroTest {
         assertFalse(tablero.entraElBarco(buqueH, 5, 8));
 
     }
+    @Test
+    public void testEstaOcupado(){
+        Tablero tablero = new Tablero(10, 10);
 
+        //testeo para nave vertical
+        Buque buqueV = new Buque(true);
+        tablero.rellenar(buqueV, 0, 0);
 
+        // coordenadas ocupadas
+        assertTrue(tablero.estaOcupado(buqueV, 0,0 ));
+        assertTrue(tablero.estaOcupado(buqueV, 1,0));
+        assertTrue(tablero.estaOcupado(buqueV, 2, 0));
+        // coordenadas vacias
+        assertFalse(tablero.estaOcupado(buqueV, 0, 3));
+        assertFalse(tablero.estaOcupado(buqueV, 1, 3));
+        assertFalse(tablero.estaOcupado(buqueV, 2, 3));
 
+        //testeo para nave horizontal
+        Buque buqueH = new Buque(false);
+        tablero.rellenar(buqueH, 0, 1);
+        //coordenadas ocupadas
+        assertTrue(tablero.estaOcupado(buqueH, 0,1 ));
+        assertTrue(tablero.estaOcupado(buqueH, 0,2));
+        assertTrue(tablero.estaOcupado(buqueH, 0, 3));
+        //coordenadas vacias
+        assertFalse(tablero.estaOcupado(buqueH, 3, 3));
+        assertFalse(tablero.estaOcupado(buqueH, 1, 3));
+        assertFalse(tablero.estaOcupado(buqueH, 2, 3));
+
+    }
 
 }
