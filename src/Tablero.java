@@ -52,7 +52,7 @@ public class Tablero {
 
     // valida que el barco entre en la matriz retorna true si entra false si no
     // entra
-    private boolean entraElBarco(Nave nave, int filInicial, int colInicial) {
+    public boolean entraElBarco(Nave nave, int filInicial, int colInicial) {
 
         if (nave.esVertical()) {// chequeo para barco vertical
             if ((filInicial + nave.getVida()) > filas) {// si no entra verticalmente
