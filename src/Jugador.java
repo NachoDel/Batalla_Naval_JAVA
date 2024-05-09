@@ -21,6 +21,15 @@ public class Jugador {
         return !(oponente.getTablero().getMatriz()[coord[0]][coord[1]] instanceof Agua);
     }
 
+    //Solo permite disparar a la coordenada (0,0)
+    public boolean dispararParaTest(Jugador oponente, int danio) {
+        int[] coord = new int[2];
+        coord[0] = 0;
+        coord[1] = 0;
+        oponente.getTablero().recibirDisparo(coord[0], coord[1], danio);
+        return !(oponente.getTablero().getMatriz()[coord[0]][coord[1]] instanceof Agua);
+    }
+
     public void crearYColocarNaves() {
         System.out.println("Colocando submarino - 2 casillas");
         tablero.colocarNave(new Submarino());

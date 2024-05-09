@@ -144,6 +144,26 @@ public class Tablero {
         rellenar(nave, filInicial, colInicial);
     }
 
+    //Tener en cuenta que no se puede llenar el tablero desde aca NOTHANDLED
+    public void colocarNaveParaTest(Nave nave) {
+        // Inserto como coordenadas inciales las (0,0)
+        int[] coord = new int[2];
+        coord[0] = 0;
+        coord[1] = 0;
+        // Si llega a estar ocupado, sumo en 1 la fila, para ir recorriendo hacia abajo
+        while (estaOcupado(nave, coord[0], coord[1]) && coord[0] < this.filas) {
+            coord[0]++;
+        }
+        if(coord[0] == this.filas){
+            coord[0] = 0;
+        }
+        // En caso de que toda la fila este ocupada, Recorro por columnas
+        while (estaOcupado(nave, coord[0], coord[1]) && coord[1] < this.columnas) {
+            coord[1]++;
+        }
+        rellenar(nave, coord[0], coord[1]);
+    }
+
     // muestra el tablero, si no hay nada es ".", si hay un barco muestra el
     // caracter correspondiente a su tipo
     // si hubo disparo efectivo muestra "X", si hubo disparo errado muestra "0"
