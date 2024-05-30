@@ -1,6 +1,7 @@
 package src;
 
 import src.Naves.*;
+import src.Tableros.Tablero;
 
 public class Jugador {
     private String nombre;

@@ -1,7 +1,7 @@
 package src.TESTS;
 
 import src.Naves.Buque;
-import src.Tablero;
+import src.Tableros.Tablero;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;

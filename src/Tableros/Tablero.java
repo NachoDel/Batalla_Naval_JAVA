@@ -1,7 +1,8 @@
-package src;
+package src.Tableros;
 
+import java.util.ArrayList;
 import java.util.Scanner;
-
+import java.util.HashMap;
 import src.Naves.Agua;
 import src.Naves.Impacto;
 import src.Naves.Nave;
@@ -11,6 +12,7 @@ public class Tablero {
     private int columnas;
     private Nave[][] matriz;
     private int navesConVida;
+    private HashMap<Nave,ArrayList<Coordenada>> coordenadasNave;
 
     // constructor
     public Tablero(int filas, int columnas) {
@@ -135,13 +137,32 @@ public class Tablero {
         int[] coord = pedirCoordenadas();
         int filInicial = coord[0];
         int colInicial = coord[1];
+
         while (!entraElBarco(nave, filInicial, colInicial) || estaOcupado(nave, filInicial, colInicial)) {
             System.out.println("Reingrese coordenadas");
             coord = pedirCoordenadas();
             filInicial = coord[0];
             colInicial = coord[1];
         }
+
         rellenar(nave, filInicial, colInicial);
+        //Hasta aca logica para pedir coordenadas y colocar la nave
+
+        //Ahora logica para guardar las coordenadas de esa nave
+        ArrayList<Coordenada> listaCoordenadas = new ArrayList<Coordenada>();
+        //guardo la  coordenada inicial primero
+        Coordenada cord = new Coordenada(filInicial, colInicial);
+        listaCoordenadas.add(cord);
+        //guardo el resto de coordenadas
+        for (int i = nave.getVida(); i > 0; i--){
+            if(nave.esVertical()){
+                cord = new Coordenada(filInicial + i, colInicial);
+            }else{
+                cord = new Coordenada(filInicial, colInicial + i);
+            }
+            listaCoordenadas.add(cord);
+        }
+        coordenadasNave.put(nave, listaCoordenadas);
     }
 
     //Tener en cuenta que no se puede llenar el tablero desde aca NOTHANDLED
@@ -219,7 +240,7 @@ public class Tablero {
     // en un futuro algun powerup que quite mas de uno de vida)
     // retorna true si el disparo pudo hacerse, false si esa zona ya fue disparada
     // previamente
-    public boolean recibirDisparo(int f, int c, int danio) {
+    public boolean recibirDisparo(int f, int c) {
         // primero veo si esta ocupada prosigo sino, pongo "-" significa agua.
         if (celdaOcupada(f, c)) {
             // si esta ocupada pero con impacto o con agua repite tiro
@@ -227,22 +248,19 @@ public class Tablero {
                 System.out.println("repite tiro, zona ya disparada");
                 return false;
             } else {// si esta ocupado pero no es impacto ni agua significa que hay un barco
-                if (matriz[f][c].getVida() - danio > 0) {// si el barco aguanta el tiro sin morir se le quita la vida y
-                                                         // se marca
-                                                         // con impacto "X" el lugar
-                    matriz[f][c].quitarVida(danio);
+                if (matriz[f][c].getVida() > 0) {
+                    // si el barco aguanta el tiro se le quita la vida y
+                    // se marca con impacto "X" el lugar
+                    matriz[f][c].quitarVida();
                     matriz[f][c] = new Impacto();
                     System.out.println("Disparo efectivo");
-                    return true;
-                } else { // si el barco no aguanta el tiro se hace lo mismo pero se informa que el barco
-                         // fue
-                         // destruido y se disminuye navesConVida
-                    matriz[f][c].quitarVida(danio);
-                    matriz[f][c] = new Impacto();
-                    System.out.println("Disparo efectivo, Barco hundido");
-                    navesConVida--;
-                    return true;
+                    //si la nave se destruyo, reduzco naves con vida
+                    if(!matriz[f][c].getEstaViva()) {
+                        System.out.println("Barco hundido");
+                        navesConVida--;
+                    }
                 }
+                return true;
             }
 
         } else {// si no estaba ocupada pongo agua
