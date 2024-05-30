@@ -13,12 +13,13 @@ public class Jugador {
     }
 
     /** @returns true si el disparo fue exitoso, false si no */
+    //este metodo va a cambiar cuando implementemos Strategy
     public boolean disparar(Jugador oponente, int danio) {
         int[] coord;
         do {
             coord = tablero.pedirCoordenadas();
 
-        } while (!oponente.getTablero().recibirDisparo(coord[0], coord[1], danio));
+        } while (!oponente.getTablero().recibirDisparo(coord[0], coord[1]));
         return !(oponente.getTablero().getMatriz()[coord[0]][coord[1]] instanceof Agua);
     }
 
@@ -27,7 +28,7 @@ public class Jugador {
         int[] coord = new int[2];
         coord[0] = 0;
         coord[1] = 0;
-        oponente.getTablero().recibirDisparo(coord[0], coord[1], danio);
+        oponente.getTablero().recibirDisparo(coord[0], coord[1]);
         return !(oponente.getTablero().getMatriz()[coord[0]][coord[1]] instanceof Agua);
     }
 
