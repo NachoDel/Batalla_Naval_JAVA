@@ -164,6 +164,16 @@ public class Tablero {
         }
         coordenadasNave.put(nave, listaCoordenadas);
     }
+    public ArrayList<Coordenada> getCoordenadasNave(Coordenada coordenada){
+        for (Nave nave : coordenadasNave.keySet()){
+            for (Coordenada cord : coordenadasNave.get(nave)){
+                if(cord.equals(coordenada)){
+                    return coordenadasNave.get(nave);
+                }
+            }
+        }
+        return null;
+    }
 
     //Tener en cuenta que no se puede llenar el tablero desde aca NOTHANDLED
     public void colocarNaveParaTest(Nave nave) {
