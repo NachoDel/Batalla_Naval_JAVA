@@ -3,7 +3,10 @@ package src;
 import src.Disparos.Disparo;
 import src.Disparos.DisparoSimple;
 import src.Naves.*;
+import src.Tableros.Coordenada;
 import src.Tableros.Tablero;
+
+import java.util.Scanner;
 
 public class Jugador {
     private String nombre;
@@ -21,15 +24,21 @@ public class Jugador {
         this.disparo = disparo;
     }
 
-    /** @returns true si el disparo fue exitoso, false si no */
-
+    /**
+     * Realiza un disparo al tablero del oponente
+     * @param oponente Jugador al que se le dispara
+     * @return true si se acertó un disparo, false si no
+     */
     public boolean disparar(Jugador oponente) {
-        int[] coord = tablero.pedirCoordenadas();
-        disparo.disparar(oponente.getTablero(), coord[0], coord[1]);
-        return !(oponente.getTablero().getMatriz()[coord[0]][coord[1]] instanceof Agua);
+        Coordenada coord = tablero.pedirCoordenadas();
+        disparo.disparar(oponente.getTablero(), coord);
+        return !(oponente.getTablero().getMatriz()[coord.getFila()][coord.getColumna()] instanceof Agua);
     }
 
 
+    /**
+     * Crea y coloca las naves en el tablero
+     */
     public void crearYColocarNaves() {
         System.out.println("Colocando submarino - 2 casillas");
         tablero.colocarNave(new Submarino());
@@ -48,6 +57,8 @@ public class Jugador {
         tablero.mostrarTablero();
 
     }
+
+
 
     public String getNombre() {
         return nombre;

@@ -6,7 +6,7 @@ public class Acorazado extends Nave {
 
     // Definicion del constructor
     public Acorazado(boolean vertical) {
-        super("Acorazado", vertical, vida);
+        super("Acorazado", vida);
     }
 
     // Constructor sin parametros

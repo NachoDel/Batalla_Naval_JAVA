@@ -8,27 +8,26 @@ import java.util.ArrayList;
 public class DisparoDoble implements Disparo{
 
     @Override
-    public void disparar(Tablero tablero, int x, int y){
-        Coordenada coordenada = new Coordenada(x,y);
-        ArrayList<Coordenada> coordenadas = new ArrayList<Coordenada>();
-        coordenadas = tablero.getCoordenadasNave(coordenada);
+    public void disparar(Tablero tablero, Coordenada coordenada){
+        ArrayList<Coordenada> listaCoordenadas = new ArrayList<>();
+        listaCoordenadas = tablero.getCoordenadasNave(coordenada);
         int index = 0;
-        for(Coordenada c : coordenadas){
-            if(c.getFila() == x && c.getColumna() == y){
-                index = coordenadas.indexOf(c);
+        for(Coordenada c : listaCoordenadas){
+            if(c.getFila() == coordenada.getFila() && c.getColumna() == coordenada.getColumna()){
+                index = listaCoordenadas.indexOf(c);
             }
         }
             // Disparar a la coordenada elegida
-            tablero.recibirDisparo(coordenada.getFila(), coordenada.getColumna());
+            tablero.recibirDisparo(coordenada);
             // Disparar a la siguiente coordenada en la lista, si existe
-            if(index + 1 < coordenadas.size()) {
-                Coordenada siguienteCoordenada = coordenadas.get(index + 1);
-                tablero.recibirDisparo(siguienteCoordenada.getFila(), siguienteCoordenada.getColumna());
+            if(index + 1 < listaCoordenadas.size()) {
+                Coordenada siguienteCoordenada = listaCoordenadas.get(index + 1);
+                tablero.recibirDisparo(siguienteCoordenada);
             }
             else{  // Disparar a la coordenada anterior en la lista, si existe
                 if(index - 1 >= 0){
-                    Coordenada anteriorCoordenada = coordenadas.get(index - 1);
-                    tablero.recibirDisparo(anteriorCoordenada.getFila(), anteriorCoordenada.getColumna());
+                    Coordenada anteriorCoordenada = listaCoordenadas.get(index - 1);
+                    tablero.recibirDisparo(anteriorCoordenada);
                 }
         }
     }

@@ -19,15 +19,22 @@ public class Nave {
     public Nave(String tipo, int vida) {
         this.tipo = tipo;
         this.vida = vida;
-        vertical = inputVertical();
+        vertical = askVerticalidad();
         estaViva = true;
     }
 
-    private boolean inputVertical() {
-        System.out.print("Desea que " + tipo + " sea vertical?: ");
+    /**
+     * Pregunta al usuario si desea que la nave sea vertical
+     * @return true si la nave es vertical, false si no
+     */
+    private boolean askVerticalidad(){
         Scanner scanner = new Scanner(System.in);
-        int s = scanner.nextInt();
-        return s == 1;
+        String input;
+        do {
+            System.out.println("Desea que la nave sea vertical? (Y: si, N: no)");
+            input = scanner.next();
+        } while (!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N"));
+        return input.equalsIgnoreCase("Y");
     }
 
     public boolean esVertical() {
