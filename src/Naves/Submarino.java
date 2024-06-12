@@ -11,6 +11,6 @@ public class Submarino extends Nave {
 
     // Constructor sin parametros
     public Submarino() {
-        super("Submarino", vida);
+        super("Submarino", true, vida);
     }
 }

@@ -35,12 +35,12 @@ public class Main {
                     do {
                         System.out.println("Turno de disparar de " + j1.getNombre());
                         j2.getTablero().mostrarOculto();
-                    } while (j1.disparar(j2, 1));
+                    } while (j1.disparar(j2));
 
                     do {
                         System.out.println("Turno de disparar de " + j2.getNombre());
                         j1.getTablero().mostrarOculto();
-                    } while (j2.disparar(j1, 1));
+                    } while (j2.disparar(j1));
 
                 }
                 if (j2.getTablero().getNavesConVida() == 0) {

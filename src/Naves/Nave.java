@@ -4,20 +4,15 @@ import java.util.Scanner;
 
 public class Nave {
     private String tipo;
-
-    /*
-     * Submarino = 2
-     * Buque = 4 lugares
-     * Portaaviones= 5
-     * Acorzado=6
-     */
     private boolean vertical;
     private int vida;// tamanio
+    private boolean estaViva;
 
     public Nave(String tipo, boolean vertical, int vida) {
         this.tipo = tipo;
         this.vertical = vertical;
         this.vida = vida;
+        estaViva = true;
 
     }
 
@@ -25,7 +20,7 @@ public class Nave {
         this.tipo = tipo;
         this.vida = vida;
         vertical = inputVertical();
-
+        estaViva = true;
     }
 
     private boolean inputVertical() {
@@ -57,9 +52,15 @@ public class Nave {
         this.vida = vida;
     }
 
-    // quita tanta vida como se le indique
-    public void quitarVida(int danio) {
-        vida = vida - danio;
+    public boolean getEstaViva() {
+        return estaViva;
     }
 
+    // quita tanta vida como se le indique
+    public void quitarVida() {
+        vida--;
+        if (vida == 0) {
+            estaViva = false;
+        }
+    }
 }
