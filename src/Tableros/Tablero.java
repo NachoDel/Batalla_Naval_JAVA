@@ -166,7 +166,7 @@ public class Tablero {
         //guardo la  coordenada inicial primero
         listaCoordenadas.add(coord);
         //guardo el resto de coordenadas
-        for (int i = 0; i > nave.getVida(); i++){
+        for (int i = 0; i < nave.getVida(); i++){
             if(nave.esVertical()){
                 coord = new Coordenada(coord.getFila() + i, coord.getColumna());
             }else{
@@ -205,6 +205,49 @@ public class Tablero {
             System.out.println("No hay ninguna nave en esa coordenada");
         }
         return null;
+    }
+
+
+
+    /**
+     * recibe un disparo en las coordenadas f,c si hay un barco en esa posicion
+     * quita vida al barco y marca con "X" si no hay barco marca con "0"
+     * @param coord coordenadas del disparo
+     * @return true si se pudo hacer el disparo, false si era una zona ya disparada
+     */
+    public boolean recibirDisparo(Coordenada coord) {
+        // primero veo si esta ocupada prosigo sino, pongo "-" significa agua.
+        int f = coord.getFila();
+        int c = coord.getColumna();
+        if (celdaOcupada(f, c)) {
+            // si esta ocupada pero con impacto o con agua repite tiro
+            if (matriz[f][c] instanceof Impacto || matriz[f][c] instanceof Agua) {
+                System.out.println("repite tiro, zona ya disparada");
+                return false;
+            } else {// si esta ocupado pero no es impacto ni agua significa que hay un barco
+                if (matriz[f][c].getVida() > 1) {
+                    // si el barco aguanta el tiro se le quita la vida y
+                    // se marca con impacto "X" el lugar
+                    matriz[f][c].quitarVida();
+                    matriz[f][c] = new Impacto();
+                    System.out.println("Disparo efectivo");
+                    //si la nave se destruyo, reduzco naves con vida
+
+                }else{
+                    matriz[f][c].quitarVida();
+                    matriz[f][c] = new Impacto();
+                    System.out.println("BARCO HUNDIDO");
+                    navesConVida--;
+                }
+                return true;
+            }
+
+        } else {// si no estaba ocupada pongo agua
+            matriz[f][c] = new Agua();
+            System.out.println("Disparo al agua");
+            return true;
+        }
+
     }
 
     /**
@@ -246,13 +289,49 @@ public class Tablero {
                     if (j == -1)
                         System.out.print(i + "   ");
                     else {
-                        if (matriz[i][j] instanceof Impacto) {
-                            System.out.print("X" + "  ");
-                        } else if (matriz[i][j] instanceof Agua) {
-                            System.out.print("0" + "  ");
-                        } else {
-                            System.out.print("." + "  ");
+                        if(celdaOcupada(i, j)){
+                            if(getNaveEnCoordenada(new Coordenada(i,j)).getEstaViva()){
+                                if (matriz[i][j] instanceof Impacto) {
+                                    System.out.print("X" + "  ");
+                                } else if (matriz[i][j] instanceof Agua) {
+                                    System.out.print("0" + "  ");
+                                } else {
+                                    System.out.print("." + "  ");
+                                }
+                            }else{
+                                System.out.print(matriz[i][j].getTipo().toUpperCase().charAt(0) + "  ");
+                            }
+                        }else{
+                                System.out.print("." + "  ");
+                            }
                         }
+                    }
+
+            }
+            System.out.println();
+        }
+    }
+    /*
+    public void mostrarOculto() {
+        for (int i = -1; i < filas; i++) {
+            for (int j = -1; j < columnas; j++) {
+                if (i == -1) {
+                    System.out.print(j + "  ");
+                } else {
+                    if (j == -1)
+                        System.out.print(i + "   ");
+                    else {
+                        if(celdaOcupada(i, j) && !matriz[i][j].getEstaViva()){
+                            System.out.println(matriz[i][j].getTipo().toUpperCase().charAt(0) + "  ");
+                        }else {
+                            if (matriz[i][j] instanceof Impacto) {
+                                System.out.print("X" + "  ");
+                            } else if (matriz[i][j] instanceof Agua) {
+                                System.out.print("0" + "  ");
+                            } else {
+                                System.out.print("." + "  ");
+                            }
+                            }
 
                     }
 
@@ -260,46 +339,7 @@ public class Tablero {
             }
             System.out.println();
         }
-    }
-
-    /**
-     * recibe un disparo en las coordenadas f,c si hay un barco en esa posicion
-     * quita vida al barco y marca con "X" si no hay barco marca con "0"
-     * @param coord coordenadas del disparo
-     * @return true si se pudo hacer el disparo, false si era una zona ya disparada
-     */
-    public boolean recibirDisparo(Coordenada coord) {
-        // primero veo si esta ocupada prosigo sino, pongo "-" significa agua.
-        int f = coord.getFila();
-        int c = coord.getColumna();
-        if (celdaOcupada(f, c)) {
-            // si esta ocupada pero con impacto o con agua repite tiro
-            if (matriz[f][c] instanceof Impacto || matriz[f][c] instanceof Agua) {
-                System.out.println("repite tiro, zona ya disparada");
-                return false;
-            } else {// si esta ocupado pero no es impacto ni agua significa que hay un barco
-                if (matriz[f][c].getVida() > 0) {
-                    // si el barco aguanta el tiro se le quita la vida y
-                    // se marca con impacto "X" el lugar
-                    matriz[f][c].quitarVida();
-                    matriz[f][c] = new Impacto();
-                    System.out.println("Disparo efectivo");
-                    //si la nave se destruyo, reduzco naves con vida
-                    if(!matriz[f][c].getEstaViva()) {
-                        System.out.println("Barco hundido");
-                        navesConVida--;
-                    }
-                }
-                return true;
-            }
-
-        } else {// si no estaba ocupada pongo agua
-            matriz[f][c] = new Agua();
-            System.out.println("Disparo al agua");
-            return true;
-        }
-
-    }
+    }*/
 
     public Nave[][] getMatriz() {
         return matriz;

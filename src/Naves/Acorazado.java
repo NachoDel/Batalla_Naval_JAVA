@@ -11,6 +11,6 @@ public class Acorazado extends Nave {
 
     // Constructor sin parametros
     public Acorazado() {
-        super("Acorazado", true,  vida);
+        super("Acorazado",  vida);
     }
 }
