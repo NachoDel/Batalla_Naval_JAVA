@@ -27,9 +27,7 @@ public class Nave {
         System.out.print("Desea que " + tipo + " sea vertical?: ");
         Scanner scanner = new Scanner(System.in);
         int s = scanner.nextInt();
-
         return s == 1;
-
     }
 
     public boolean esVertical() {

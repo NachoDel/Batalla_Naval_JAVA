@@ -6,6 +6,8 @@ import src.Tableros.Tablero;
 import java.util.ArrayList;
 
 public class DisparoDoble implements Disparo{
+
+    @Override
     public void disparar(Tablero tablero, int x, int y){
         Coordenada coordenada = new Coordenada(x,y);
         ArrayList<Coordenada> coordenadas = new ArrayList<Coordenada>();

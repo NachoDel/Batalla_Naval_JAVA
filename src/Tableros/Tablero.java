@@ -25,7 +25,7 @@ public class Tablero {
 
     // devuelve true si las coordenadas que se le pase como argumento estan dentro
     // del rango de la matriz
-    public boolean validarCoordenadas(int f, int c) {
+    private boolean validarCoordenadas(int f, int c) {
         if (f < 0 || f > filas || c < 0 || c > columnas) {
             return false;
         } else {
@@ -33,6 +33,11 @@ public class Tablero {
         }
     }
 
+    /**
+     * pide coordenadas al usuario, valida que esten dentro del rango de la matriz
+       hasta que no sean validas no deja de pedirlas
+     * @return un arreglo de dos posiciones con las coordenadas pedidas por scanner
+     */
     public int[] pedirCoordenadas() {
         int[] coordenadas = new int[2];
         Scanner scanner = new Scanner(System.in);
@@ -48,14 +53,26 @@ public class Tablero {
         return coordenadas;
     }
 
-    // me dice si una casilla esta ocupada o esta vacia (null)
+    /**
+     * me dice si una casilla esta ocupada o esta vacia (null)
+     *
+     * @param f fila inicial
+     * @param c columna inicial
+     * @return true si esta ocupada, false si esta vacia
+     */
     private boolean celdaOcupada(int f, int c) {
         return matriz[f][c] != null;
     }
 
-    // valida que el barco entre en la matriz retorna true si entra false si no
-    // entra
-    public boolean entraElBarco(Nave nave, int filInicial, int colInicial) {
+    /**
+     * Este método valida si un barco puede encajar dentro de la matriz basándose en su posición inicial.
+     *
+     * @param nave El barco que se necesita colocar en la matriz.
+     * @param filInicial La posición inicial de la fila para el barco.
+     * @param colInicial La posición inicial de la columna para el barco.
+     * @return true si el barco cabe dentro de la matriz, false en caso contrario.
+     */
+    private boolean entraElBarco(Nave nave, int filInicial, int colInicial) {
 
         if (nave.esVertical()) {// chequeo para barco vertical
             if ((filInicial + nave.getVida()) > filas) {// si no entra verticalmente
@@ -75,9 +92,15 @@ public class Tablero {
         }
     }
 
-    // valida si alguna posicion del barco que quiero poner ya esta ocupada por otro
-    // barco
-    public boolean estaOcupado(Nave nave, int filInicial, int colInicial) {
+    /**
+     * Este método verifica si alguna posición del barco que se desea colocar ya está ocupada por otro barco.
+     *
+     * @param nave El barco que se necesita colocar en la matriz.
+     * @param filInicial La posición inicial de la fila para el barco.
+     * @param colInicial La posición inicial de la columna para el barco.
+     * @return true si alguna posición del barco está ocupada, false si todas las posiciones están libres.
+     */
+    private boolean estaOcupado(Nave nave, int filInicial, int colInicial) {
         if (nave.esVertical()) { // si es vertical chequeo verticalmente
             for (int i = filInicial; i < filInicial + nave.getVida(); i++) {// voy iterando filas segun vida del barco
                                                                             // partiendo en coord inicial
@@ -101,9 +124,14 @@ public class Tablero {
         }
     }
 
-    // recibe el barco y la coordenada inicial (la punta del barco), rellena con el
-    // barco
-    public void rellenar(Nave nave, int filInicial, int colInicial) {
+    /**
+     * Este método recibe un barco y una coordenada inicial (la punta del barco), y rellena la matriz con el barco.
+     * tanto si es vertical como horizontal.
+     * @param nave El barco que se necesita colocar en la matriz.
+     * @param filInicial La posición inicial de la fila para el barco.
+     * @param colInicial La posición inicial de la columna para el barco.
+     */
+    private void rellenar(Nave nave, int filInicial, int colInicial) {
         // si es vertical relleno verticalmente (de arriba hacia abajo)
         if (nave.esVertical()) {
             for (int i = filInicial; i < filInicial + nave.getVida(); i++) {// voy iterando filas
@@ -121,17 +149,11 @@ public class Tablero {
         navesConVida++;
     }
 
-    /*
-     * public void colocarNave(Nave nave, int filInicial, int colInicial) {
-     * // solo rellena si el barco entra y no esta ocupado ese lugar
-     * if (entraElBarco(nave, filInicial, colInicial) && !estaOcupado(nave,
-     * filInicial, colInicial))
-     * rellenar(nave, filInicial, colInicial);
-     * else{
-     * if()
-     * }
-     * 
-     * }
+    /**
+     * Recibe una nave y la coloca pidiendo coordenadas al usuario, valida que
+     * estas coordenas sean validas, que el barco entre en la matriz y que no este
+     * ocupado el lugar donde se quiere poner (valida todo)
+     * @param nave
      */
     public void colocarNave(Nave nave) {
         // solo rellena si el barco entra y no esta ocupado ese lugar
@@ -150,7 +172,7 @@ public class Tablero {
         //Hasta aca logica para pedir coordenadas y colocar la nave
 
         //Ahora logica para guardar las coordenadas de esa nave
-        ArrayList<Coordenada> listaCoordenadas = new ArrayList<Coordenada>();
+        ArrayList<Coordenada> listaCoordenadas = new ArrayList<>();
         //guardo la  coordenada inicial primero
         Coordenada cord = new Coordenada(filInicial, colInicial);
         listaCoordenadas.add(cord);
@@ -176,30 +198,11 @@ public class Tablero {
         return null;
     }
 
-    //Tener en cuenta que no se puede llenar el tablero desde aca NOTHANDLED
-    public void colocarNaveParaTest(Nave nave) {
-        // Inserto como coordenadas inciales las (0,0)
-        int[] coord = new int[2];
-        coord[0] = 0;
-        coord[1] = 0;
-        // Si llega a estar ocupado, sumo en 1 la fila, para ir recorriendo hacia abajo
-        while (estaOcupado(nave, coord[0], coord[1]) && coord[0] < this.filas) {
-            coord[0]++;
-        }
-        if(coord[0] == this.filas){
-            coord[0] = 0;
-        }
-        // En caso de que toda la fila este ocupada, Recorro por columnas
-        while (estaOcupado(nave, coord[0], coord[1]) && coord[1] < this.columnas) {
-            coord[1]++;
-        }
-        rellenar(nave, coord[0], coord[1]);
-    }
 
-    // muestra el tablero, si no hay nada es ".", si hay un barco muestra el
-    // caracter correspondiente a su tipo
-    // si hubo disparo efectivo muestra "X", si hubo disparo errado muestra "0"
-    // tambien imprime numero de filas y columnas
+    /**
+     * muestra el tablero, si no hay nada es ".", si hay un barco muestra el
+     * caracter correspondiente a su tipo, se usa cuando se colocan las naves unicamente
+     */
     public void mostrarTablero() {
         for (int i = -1; i < filas; i++) {
             for (int j = -1; j < columnas; j++) {
@@ -222,6 +225,10 @@ public class Tablero {
         }
     }
 
+    /**
+     * muestra el tablero con "." si fue impactado muestra "X" y si fue
+     * agua muestra "0" se usa cuando se esta disparando (vista del otro jugador)
+     */
     public void mostrarOculto() {
         for (int i = -1; i < filas; i++) {
             for (int j = -1; j < columnas; j++) {
@@ -247,10 +254,13 @@ public class Tablero {
         }
     }
 
-    // dispara a una coordenada de la matriz, con un cierto danio (por si se agrega
-    // en un futuro algun powerup que quite mas de uno de vida)
-    // retorna true si el disparo pudo hacerse, false si esa zona ya fue disparada
-    // previamente
+    /**
+     * recibe un disparo en las coordenadas f,c si hay un barco en esa posicion
+     * quita vida al barco y marca con "X" si no hay barco marca con "0"
+     * @param f fila
+     * @param c columna
+     * @return true si se pudo hacer el disparo, false si era una zona ya disparada
+     */
     public boolean recibirDisparo(int f, int c) {
         // primero veo si esta ocupada prosigo sino, pongo "-" significa agua.
         if (celdaOcupada(f, c)) {
