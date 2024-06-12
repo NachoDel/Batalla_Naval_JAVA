@@ -20,6 +20,7 @@ public class Tablero {
         this.columnas = columnas;
         this.matriz = new Nave[filas][columnas];
         this.navesConVida = 0;
+        this.coordenadasNave = new HashMap<>();
     }
 
     // devuelve true si las coordenadas que se le pase como argumento estan dentro
@@ -162,7 +163,7 @@ public class Tablero {
             }
             listaCoordenadas.add(cord);
         }
-        coordenadasNave.put(nave, listaCoordenadas);
+        coordenadasNave.put(nave, listaCoordenadas); //queda guardada la nave con sus coordenadas
     }
     public ArrayList<Coordenada> getCoordenadasNave(Coordenada coordenada){
         for (Nave nave : coordenadasNave.keySet()){
