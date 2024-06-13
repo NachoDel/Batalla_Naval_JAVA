@@ -5,6 +5,7 @@ import src.Jugador;
 
 public class DoubleShotPU extends PowerUp{
     public DoubleShotPU(){
+        this.nombre = "DoubleShot";
     }
 
     @Override

@@ -14,6 +14,7 @@ public class Nave {
         this.vertical = vertical;
         this.vida = vida;
         estaViva = true;
+        shield = false;
 
     }
 
@@ -22,6 +23,7 @@ public class Nave {
         this.vida = vida;
         vertical = askVerticalidad();
         estaViva = true;
+        shield = false;
     }
 
     /**
@@ -64,6 +66,11 @@ public class Nave {
 
     // quita tanta vida como se le indique
     public void quitarVida() {
+        if(shield){
+            System.out.println("Nave protegida con escudo, no se le quita vida");
+            shield = false;
+            return;
+        }
         vida--;
         if (vida == 0) {
             estaViva = false;

@@ -196,20 +196,24 @@ public class Tablero {
                 System.out.println("repite tiro, zona ya disparada");
                 return false;
             } else {// si esta ocupado pero no es impacto ni agua significa que hay un barco
-                if (matriz[f][c].getVida() > 1) {
-                    // si el barco aguanta el tiro se le quita la vida y
-                    // se marca con impacto "X" el lugar
-                    matriz[f][c].quitarVida();
-                    matriz[f][c] = new Impacto();
-                    System.out.println("Disparo efectivo");
-                    //si la nave se destruyo, reduzco naves con vida
+                    if(!matriz[f][c].getShield()){
+                        if (matriz[f][c].getVida() > 1) {
+                            // si el barco aguanta el tiro se le quita la vida y
+                            // se marca con impacto "X" el lugar
+                            matriz[f][c].quitarVida();
+                            matriz[f][c] = new Impacto();
+                            System.out.println("Disparo efectivo");
+                            //si la nave se destruyo, reduzco naves con vida
 
-                }else{
-                    matriz[f][c].quitarVida();
-                    matriz[f][c] = new Impacto();
-                    System.out.println("BARCO HUNDIDO");
-                    navesConVida--;
-                }
+                        }else{
+                            matriz[f][c].quitarVida();
+                            matriz[f][c] = new Impacto();
+                            System.out.println("BARCO HUNDIDO");
+                            navesConVida--;
+                        }
+                    }else{
+                        matriz[f][c].quitarVida();
+                    }
                 return true;
             }
 
@@ -330,7 +334,7 @@ public class Tablero {
                             }
                             else if (matriz[i][j] instanceof Impacto) {
                                 if( getNaveEnCoordenada(new Coordenada(i,j)).getEstaViva()){
-                                    System.out.print("\u001B[33m"+"X" + "\u001B[0m"+"  ");
+                                    System.out.print(matriz[i][j].getTipo()+"  ");
                                 }else{
                                     System.out.print("\u001B[31m" + getNaveEnCoordenada(new Coordenada(i,j)).getTipo().toUpperCase().charAt(0) +"\u001B[0m" + "  ");
                                 }

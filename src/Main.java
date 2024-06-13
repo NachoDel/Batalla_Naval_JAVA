@@ -3,6 +3,7 @@ package src;
 import src.Naves.Buque;
 import src.Naves.Nave;
 import src.Naves.Submarino;
+import src.PowerUps.PowerUpFactory;
 import src.Tableros.Coordenada;
 
 import java.util.Scanner;
@@ -77,9 +78,23 @@ public class Main {
                 j4.getTablero().rellenar(buque2, c2);
 
 
+                PowerUpFactory fabricaPowerUp = new PowerUpFactory();
+
                 j3.getTablero().mostrarTablero();
                 System.out.println(" ");
                 j4.getTablero().mostrarTablero();
+
+                j3.disparar(j4);
+                j4.getTablero().mostrarOculto();
+
+                j4.addPowerUp(fabricaPowerUp.crearPowerUp("Shield"));
+                j4.usarPowerUp("Shield");
+
+                j3.disparar(j4);
+                j4.getTablero().mostrarOculto();
+
+                j3.disparar(j4);
+                j4.getTablero().mostrarOculto();
 
                 j3.disparar(j4);
                 j4.getTablero().mostrarOculto();

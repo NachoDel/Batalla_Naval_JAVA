@@ -4,10 +4,11 @@ import src.Naves.Nave;
 
 import java.util.Scanner;
 
-public class ShieldPU extends PowerUp {
+public class Shield extends PowerUp {
 
 
-    public ShieldPU(){
+    public Shield(){
+        nombre = "Shield";
     }
 
     @Override
@@ -16,18 +17,19 @@ public class ShieldPU extends PowerUp {
         System.out.println("A que barco desea ponerle un escudo?");
         System.out.println("Barcos Disponibles: ");
         for (Nave nave : jugador.getTablero().getMapaDeNaves().keySet()){
-            System.out.println("[ " + nave.toString() + " ]");
+            if(nave.getEstaViva())
+                System.out.println("[ " + nave.toString() + " ]");
         }
         String input;
         System.out.print("Ingrese el nombre del barco: ");
         input = scanner.next();
-        while (!jugador.getTablero().estaLaNave(input)){
+        while (!jugador.getTablero().estaLaNave(input) || !jugador.getTablero().getNave(input).getEstaViva()){
             System.out.print("Barco no valido, intente de nuevo:");
             input = scanner.next();
         }
         System.out.println("Shield activado para " + input);
         for (Nave nave : jugador.getTablero().getMapaDeNaves().keySet()){
-            if (nave.toString().equals(input)){
+            if (nave.getTipo().equalsIgnoreCase(input)){
                 nave.setShield(true);
             }
         }

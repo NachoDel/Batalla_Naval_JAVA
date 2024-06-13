@@ -1,7 +1,5 @@
 package src.PowerUps;
 
-import src.Jugador;
-
 public class PowerUpFactory {
 
     public PowerUp crearPowerUp(String powerUpType){
@@ -13,7 +11,7 @@ public class PowerUpFactory {
             return new DoubleShotPU();
         }
         else if (powerUpType.equalsIgnoreCase("Shield")) {
-            return new ShieldPU();
+            return new Shield();
         }
         return null;
 

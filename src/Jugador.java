@@ -90,4 +90,18 @@ public class Jugador {
         powerUps.add(powerUp);
     }
 
+    public void usarPowerUp(String nombre){
+        for(PowerUp powerUp : powerUps){
+            if(powerUp.getNombre().equalsIgnoreCase(nombre)){
+                powerUp.activar();
+                powerUps.remove(powerUp);
+                return;
+            }else{
+                System.out.println("No tienes ese power up");
+            }
+        }
+    }
+
+
+
 }
