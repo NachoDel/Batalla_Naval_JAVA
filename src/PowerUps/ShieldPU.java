@@ -1,6 +1,5 @@
 package src.PowerUps;
 
-import src.Jugador;
 import src.Naves.Nave;
 
 import java.util.Scanner;
@@ -16,7 +15,7 @@ public class ShieldPU extends PowerUp {
         Scanner scanner = new Scanner(System.in);
         System.out.println("A que barco desea ponerle un escudo?");
         System.out.println("Barcos Disponibles: ");
-        for (Nave nave : jugador.getTablero().getCoordenadasNave().keySet()){
+        for (Nave nave : jugador.getTablero().getMapaDeNaves().keySet()){
             System.out.println("[ " + nave.toString() + " ]");
         }
         String input;
@@ -27,7 +26,7 @@ public class ShieldPU extends PowerUp {
             input = scanner.next();
         }
         System.out.println("Shield activado para " + input);
-        for (Nave nave : jugador.getTablero().getCoordenadasNave().keySet()){
+        for (Nave nave : jugador.getTablero().getMapaDeNaves().keySet()){
             if (nave.toString().equals(input)){
                 nave.setShield(true);
             }

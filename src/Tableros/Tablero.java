@@ -12,7 +12,7 @@ public class Tablero {
     private int columnas;
     private Nave[][] matriz;
     private int navesConVida;
-    private HashMap<Nave,ArrayList<Coordenada>> coordenadasNave;
+    private HashMap<Nave,ArrayList<Coordenada>> mapaDeNaves;
 
     // constructor
     public Tablero(int filas, int columnas) {
@@ -20,7 +20,18 @@ public class Tablero {
         this.columnas = columnas;
         this.matriz = new Nave[filas][columnas];
         this.navesConVida = 0;
-        this.coordenadasNave = new HashMap<>();
+        this.mapaDeNaves = new HashMap<>();
+    }
+
+    /**
+     * me dice si una casilla esta ocupada o esta vacia (null)
+     *
+     * @param f fila inicial
+     * @param c columna inicial
+     * @return true si esta ocupada, false si esta vacia
+     */
+    private boolean celdaOcupada(int f, int c) {
+        return matriz[f][c] != null;
     }
 
     // devuelve true si las coordenadas que se le pase como argumento estan dentro
@@ -50,16 +61,6 @@ public class Tablero {
         return coordenada;
     }
 
-    /**
-     * me dice si una casilla esta ocupada o esta vacia (null)
-     *
-     * @param f fila inicial
-     * @param c columna inicial
-     * @return true si esta ocupada, false si esta vacia
-     */
-    private boolean celdaOcupada(int f, int c) {
-        return matriz[f][c] != null;
-    }
 
     /**
      * Este método valida si un barco puede encajar dentro de la matriz basándose en su posición inicial.
@@ -120,6 +121,25 @@ public class Tablero {
     }
 
     /**
+     * Recibe una nave y la coloca pidiendo coordenadas al usuario, valida que
+     * estas coordenas sean validas, que el barco entre en la matriz y que no este
+     * ocupado el lugar donde se quiere poner (valida todo)
+     * @param nave nave a colocar
+     */
+    public void colocarNave(Nave nave) {
+        // solo rellena si el barco entra y no esta ocupado ese lugar
+        Coordenada coord = pedirCoordenadas();
+
+        while (!entraElBarco(nave, coord) || estaOcupado(nave, coord)) {
+            System.out.println("Reingrese coordenadas");
+            coord = pedirCoordenadas();
+        }
+
+        rellenar(nave, coord);
+
+    }
+
+    /**
      * Este método recibe un barco y una coordenada inicial (la punta del barco), y rellena la matriz con el barco.
      * tanto si es vertical como horizontal. Agrega las coordenadas de la nave a un hashmap con la nave como key.
      * @param nave El barco que se necesita colocar en la matriz.
@@ -157,59 +177,8 @@ public class Tablero {
             }
             listaCoordenadas.add(coord);
         }
-        coordenadasNave.put(nave, listaCoordenadas); //queda guardada la nave con sus coordenadas
+        mapaDeNaves.put(nave, listaCoordenadas); //queda guardada la nave con sus coordenadas
     }
-
-    /**
-     * Recibe una nave y la coloca pidiendo coordenadas al usuario, valida que
-     * estas coordenas sean validas, que el barco entre en la matriz y que no este
-     * ocupado el lugar donde se quiere poner (valida todo)
-     * @param nave nave a colocar
-     */
-    public void colocarNave(Nave nave) {
-        // solo rellena si el barco entra y no esta ocupado ese lugar
-        Coordenada coord = pedirCoordenadas();
-
-        while (!entraElBarco(nave, coord) || estaOcupado(nave, coord)) {
-            System.out.println("Reingrese coordenadas");
-            coord = pedirCoordenadas();
-        }
-
-        rellenar(nave, coord);
-
-    }
-
-    /**
-     * Devuelve la nave que se encuentra en la coordenada pasada como argumento
-     * @param coordenada coordenada a buscar
-     * @return Nave que se encuentra en la coordenada, null si no hay ninguna nave en esa coordenada
-     */
-    public Nave getNaveEnCoordenada(Coordenada coordenada){
-        for (Nave nave : coordenadasNave.keySet()){
-            for (Coordenada cord : coordenadasNave.get(nave)){
-                if(cord.getFila() == coordenada.getFila() && cord.getColumna() == coordenada.getColumna()){
-                    return nave;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Devuelve las coordenadas de la nave que se encuentra en la coordenada pasada como argumento
-     * @param coordenada coordenada a buscar
-     * @return ArrayList de Coordenadas de la nave que se encuentra en la coordenada, null si no hay ninguna nave en esa coordenada
-     */
-    public ArrayList<Coordenada> getCoordenadasDeNave(Coordenada coordenada){
-        try{
-            coordenadasNave.get(getNaveEnCoordenada(coordenada));
-        }catch (NullPointerException e){
-            System.out.println("No hay ninguna nave en esa coordenada");
-        }
-        return null;
-    }
-
-
 
     /**
      * recibe un disparo en las coordenadas f,c si hay un barco en esa posicion
@@ -251,6 +220,69 @@ public class Tablero {
         }
 
     }
+
+
+    /**
+     * Devuelve la nave que se encuentra en la coordenada pasada como argumento
+     * @param coordenada coordenada a buscar
+     * @return Nave que se encuentra en la coordenada, null si no hay ninguna nave en esa coordenada
+     */
+    public Nave getNaveEnCoordenada(Coordenada coordenada){
+        for (Nave nave : mapaDeNaves.keySet()){
+            for (Coordenada cord : mapaDeNaves.get(nave)){
+                if(cord.getFila() == coordenada.getFila() && cord.getColumna() == coordenada.getColumna()){
+                    return nave;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Devuelve las coordenadas de la nave que se encuentra en la coordenada pasada como argumento
+     * @param coordenada coordenada a buscar
+     * @return ArrayList de Coordenadas de la nave que se encuentra en la coordenada, null si no hay ninguna nave en esa coordenada
+     */
+    public ArrayList<Coordenada> getCoordenadasDeNave(Coordenada coordenada){
+        try{
+            mapaDeNaves.get(getNaveEnCoordenada(coordenada));
+        }catch (NullPointerException e){
+            System.out.println("No hay ninguna nave en esa coordenada");
+        }
+        return null;
+    }
+
+    public boolean estaLaNave(String nombreNave){
+        for (Nave nave : mapaDeNaves.keySet()){
+            if(nave.getTipo().equalsIgnoreCase(nombreNave)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Nave getNave(String nombreNave){
+        for (Nave nave : mapaDeNaves.keySet()){
+            if(nave.getTipo().equalsIgnoreCase(nombreNave)){
+                return nave;
+            }
+        }
+        return null;
+    }
+
+    public Nave[][] getMatriz() {
+        return matriz;
+    }
+
+    public int getNavesConVida() {
+        return navesConVida;
+    }
+
+    public HashMap<Nave,ArrayList<Coordenada>> getMapaDeNaves(){
+        return mapaDeNaves;
+    }
+
+
 
     /**
      * muestra el tablero, si no hay nada es ".", si hay un barco muestra el
@@ -306,38 +338,14 @@ public class Tablero {
                                 System.out.print("." + "  ");
                             }
                         }else{
-                                System.out.print("." + "  ");
-                            }
+                            System.out.print("." + "  ");
                         }
                     }
+                }
 
             }
             System.out.println();
         }
-    }
-
-
-
-    public Nave[][] getMatriz() {
-        return matriz;
-    }
-
-    public int getNavesConVida() {
-        return navesConVida;
-    }
-
-    public HashMap<Nave,ArrayList<Coordenada>> getCoordenadasNave(){
-        return coordenadasNave;
-    }
-
-    public boolean estaLaNave(String nombreNave){
-        for (Nave nave : coordenadasNave.keySet()){
-            if(nave.getTipo().equalsIgnoreCase(nombreNave)){
-                return true;
-            }
-        }
-        return false;
-
     }
 
 }
