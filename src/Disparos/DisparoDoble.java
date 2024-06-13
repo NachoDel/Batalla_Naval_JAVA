@@ -10,7 +10,7 @@ public class DisparoDoble implements Disparo{
     @Override
     public void disparar(Tablero tablero, Coordenada coordenada){
         ArrayList<Coordenada> listaCoordenadas = new ArrayList<>();
-        listaCoordenadas = tablero.getCoordenadasNave(coordenada);
+        listaCoordenadas = tablero.getCoordenadasDeNave(coordenada);
         int index = 0;
         for(Coordenada c : listaCoordenadas){
             if(c.getFila() == coordenada.getFila() && c.getColumna() == coordenada.getColumna()){

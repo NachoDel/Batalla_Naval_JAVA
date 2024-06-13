@@ -121,11 +121,11 @@ public class Tablero {
 
     /**
      * Este método recibe un barco y una coordenada inicial (la punta del barco), y rellena la matriz con el barco.
-     * tanto si es vertical como horizontal.
+     * tanto si es vertical como horizontal. Agrega las coordenadas de la nave a un hashmap con la nave como key.
      * @param nave El barco que se necesita colocar en la matriz.
      * @param coord La coordenada inicial para el barco.
      */
-    private void rellenar(Nave nave, Coordenada coord) {
+    public void rellenar(Nave nave, Coordenada coord) {
         // si es vertical relleno verticalmente (de arriba hacia abajo)
         if (nave.esVertical()) {
             for (int i = coord.getFila(); i < coord.getFila() + nave.getVida(); i++) {// voy iterando filas
@@ -141,6 +141,23 @@ public class Tablero {
             }
         }
         navesConVida++;
+        //Hasta aca logica para pedir coordenadas y colocar la nave
+
+        //Ahora logica para guardar las coordenadas de esa nave en un hashmap con la nave como key
+        ArrayList<Coordenada> listaCoordenadas = new ArrayList<>();
+        //guardo la  coordenada inicial primero
+        listaCoordenadas.add(coord);
+        //guardo el resto de coordenadas
+
+        for (int i = 0; i < nave.getVida()-1; i++){ // el bucle termina en vida -1 porque ya guarde la coordenada inicial antes
+            if(nave.esVertical()){
+                coord = new Coordenada(coord.getFila()+1, coord.getColumna());
+            }else{
+                coord = new Coordenada(coord.getFila() , coord.getColumna()+1 );
+            }
+            listaCoordenadas.add(coord);
+        }
+        coordenadasNave.put(nave, listaCoordenadas); //queda guardada la nave con sus coordenadas
     }
 
     /**
@@ -159,22 +176,7 @@ public class Tablero {
         }
 
         rellenar(nave, coord);
-        //Hasta aca logica para pedir coordenadas y colocar la nave
 
-        //Ahora logica para guardar las coordenadas de esa nave en un hashmap con la nave como key
-        ArrayList<Coordenada> listaCoordenadas = new ArrayList<>();
-        //guardo la  coordenada inicial primero
-        listaCoordenadas.add(coord);
-        //guardo el resto de coordenadas
-        for (int i = 0; i < nave.getVida(); i++){
-            if(nave.esVertical()){
-                coord = new Coordenada(coord.getFila() + i, coord.getColumna());
-            }else{
-                coord = new Coordenada(coord.getFila(), coord.getColumna() + i);
-            }
-            listaCoordenadas.add(coord);
-        }
-        coordenadasNave.put(nave, listaCoordenadas); //queda guardada la nave con sus coordenadas
     }
 
     /**
@@ -185,7 +187,7 @@ public class Tablero {
     public Nave getNaveEnCoordenada(Coordenada coordenada){
         for (Nave nave : coordenadasNave.keySet()){
             for (Coordenada cord : coordenadasNave.get(nave)){
-                if(cord.equals(coordenada)){
+                if(cord.getFila() == coordenada.getFila() && cord.getColumna() == coordenada.getColumna()){
                     return nave;
                 }
             }
@@ -198,7 +200,7 @@ public class Tablero {
      * @param coordenada coordenada a buscar
      * @return ArrayList de Coordenadas de la nave que se encuentra en la coordenada, null si no hay ninguna nave en esa coordenada
      */
-    public ArrayList<Coordenada> getCoordenadasNave(Coordenada coordenada){
+    public ArrayList<Coordenada> getCoordenadasDeNave(Coordenada coordenada){
         try{
             coordenadasNave.get(getNaveEnCoordenada(coordenada));
         }catch (NullPointerException e){
@@ -276,6 +278,7 @@ public class Tablero {
         }
     }
 
+
     /**
      * muestra el tablero con "." si fue impactado muestra "X" y si fue
      * agua muestra "0" se usa cuando se esta disparando (vista del otro jugador)
@@ -290,16 +293,17 @@ public class Tablero {
                         System.out.print(i + "   ");
                     else {
                         if(celdaOcupada(i, j)){
-                            if(getNaveEnCoordenada(new Coordenada(i,j)).getEstaViva()){
-                                if (matriz[i][j] instanceof Impacto) {
+                            if(matriz[i][j] instanceof Agua){
+                                System.out.print("0" + "  ");
+                            }
+                            else if (matriz[i][j] instanceof Impacto) {
+                                if( getNaveEnCoordenada(new Coordenada(i,j)).getEstaViva()){
                                     System.out.print("X" + "  ");
-                                } else if (matriz[i][j] instanceof Agua) {
-                                    System.out.print("0" + "  ");
-                                } else {
-                                    System.out.print("." + "  ");
+                                }else{
+                                    System.out.print("\u001B[31m" + getNaveEnCoordenada(new Coordenada(i,j)).getTipo().toUpperCase().charAt(0) +"\u001B[0m" + "  ");
                                 }
                             }else{
-                                System.out.print(matriz[i][j].getTipo().toUpperCase().charAt(0) + "  ");
+                                System.out.print("." + "  ");
                             }
                         }else{
                                 System.out.print("." + "  ");
@@ -311,6 +315,7 @@ public class Tablero {
             System.out.println();
         }
     }
+
     /*
     public void mostrarOculto() {
         for (int i = -1; i < filas; i++) {
@@ -347,6 +352,10 @@ public class Tablero {
 
     public int getNavesConVida() {
         return navesConVida;
+    }
+
+    public HashMap<Nave,ArrayList<Coordenada>> getCoordenadasNave(){
+        return coordenadasNave;
     }
 
 }

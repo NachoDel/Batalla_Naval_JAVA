@@ -1,5 +1,10 @@
 package src;
 
+import src.Naves.Buque;
+import src.Naves.Nave;
+import src.Naves.Submarino;
+import src.Tableros.Coordenada;
+
 import java.util.Scanner;
 
 public class Main {
@@ -49,6 +54,52 @@ public class Main {
                     System.out.println("Gano " + j2.getNombre());
                 }
                 break;
+
+            case 2:
+                //para simular y debuguear
+                Jugador j3 = new Jugador("Jugador 1", 10, 10);
+                Jugador j4 = new Jugador("Jugador 2", 10, 10);
+
+                Nave subma = new Submarino(true);
+                Coordenada c = new Coordenada(0,0);
+                j3.getTablero().rellenar(subma, c);
+
+                Nave buque = new Buque(true);
+                c.setColumna(c.getColumna()+1);
+                j3.getTablero().rellenar(buque, c);
+
+                Nave subma2 = new Submarino(false);
+                Coordenada c2 = new Coordenada(0,0);
+                j4.getTablero().rellenar(subma2, c2);
+
+                Nave buque2 = new Buque(false);
+                c2.setFila(c2.getFila()+1);
+                j4.getTablero().rellenar(buque2, c2);
+
+
+                //j3.getTablero().mostrarTablero();
+                System.out.println(" ");
+                j4.getTablero().mostrarTablero();
+
+                j3.disparar(j4);
+                j4.getTablero().mostrarOculto();
+
+                j3.disparar(j4);
+                j4.getTablero().mostrarOculto();
+
+                j3.disparar(j4);
+                j4.getTablero().mostrarOculto();
+
+                j3.disparar(j4);
+                j4.getTablero().mostrarOculto();
+
+
+
+
+
+
+
+
 
             default:
                 break;
