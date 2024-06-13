@@ -9,4 +9,6 @@ public class DisparoSimple implements Disparo {
     public void disparar(Tablero tablero, Coordenada coord){
         tablero.recibirDisparo(coord);
     }
+
+
 }

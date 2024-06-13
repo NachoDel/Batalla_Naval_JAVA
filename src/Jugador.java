@@ -3,21 +3,26 @@ package src;
 import src.Disparos.Disparo;
 import src.Disparos.DisparoSimple;
 import src.Naves.*;
+import src.PowerUps.PowerUp;
+import src.PowerUps.PowerUpFactory;
 import src.Tableros.Coordenada;
 import src.Tableros.Tablero;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Jugador {
     private String nombre;
     private Tablero tablero;
     private Disparo disparo;
+    private ArrayList<PowerUp> powerUps;
 
 
     public Jugador(String nombre, int filas, int columnas) {
         this.nombre = nombre;
         tablero = new Tablero(filas, columnas);
         this.disparo = new DisparoSimple();
+        powerUps = new ArrayList<>();
     }
 
     public void setDisparo(Disparo disparo) {
@@ -75,4 +80,14 @@ public class Jugador {
     public void setTablero(Tablero tablero) {
         this.tablero = tablero;
     }
+
+    public ArrayList<PowerUp> getPowerUps() {
+        return powerUps;
+    }
+
+    public void addPowerUp(PowerUp powerUp){
+        powerUp.setJugador(this);
+        powerUps.add(powerUp);
+    }
+
 }

@@ -7,6 +7,7 @@ public class Nave {
     private boolean vertical;
     private int vida;// tamanio
     private boolean estaViva;
+    private boolean shield;
 
     public Nave(String tipo, boolean vertical, int vida) {
         this.tipo = tipo;
@@ -67,6 +68,18 @@ public class Nave {
         if (vida == 0) {
             estaViva = false;
         }
+    }
+
+    public String toString(){
+        return tipo + " " + vida + " de vida";
+    }
+
+    public boolean getShield(){
+        return shield;
+    }
+
+    public void setShield(boolean shield){
+        this.shield = shield;
     }
 
 }

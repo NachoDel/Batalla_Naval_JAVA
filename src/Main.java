@@ -65,7 +65,7 @@ public class Main {
                 j3.getTablero().rellenar(subma, c);
 
                 Nave buque = new Buque(true);
-                c.setColumna(c.getColumna()+1);
+                c = new Coordenada(c.getFila(), c.getColumna()+1);
                 j3.getTablero().rellenar(buque, c);
 
                 Nave subma2 = new Submarino(false);
@@ -73,11 +73,11 @@ public class Main {
                 j4.getTablero().rellenar(subma2, c2);
 
                 Nave buque2 = new Buque(false);
-                c2.setFila(c2.getFila()+1);
+                c2 = new Coordenada(c2.getFila()+1, c2.getColumna());
                 j4.getTablero().rellenar(buque2, c2);
 
 
-                //j3.getTablero().mostrarTablero();
+                j3.getTablero().mostrarTablero();
                 System.out.println(" ");
                 j4.getTablero().mostrarTablero();
 

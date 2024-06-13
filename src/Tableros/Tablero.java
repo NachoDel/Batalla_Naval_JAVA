@@ -26,7 +26,7 @@ public class Tablero {
     // devuelve true si las coordenadas que se le pase como argumento estan dentro
     // del rango de la matriz
     private boolean validarCoordenadas(Coordenada c) {
-        return c.getFila() >= 0 && c.getFila() <= filas && c.getColumna() >= 0 && c.getColumna() <= columnas;
+        return ((c.getFila() >= 0 && c.getFila() < filas) && (c.getColumna() >= 0 && c.getColumna() < columnas));
     }
 
     /**
@@ -294,11 +294,11 @@ public class Tablero {
                     else {
                         if(celdaOcupada(i, j)){
                             if(matriz[i][j] instanceof Agua){
-                                System.out.print("0" + "  ");
+                                System.out.print("\u001B[34m"+ "0" +"\u001B[0m"+ "  ");
                             }
                             else if (matriz[i][j] instanceof Impacto) {
                                 if( getNaveEnCoordenada(new Coordenada(i,j)).getEstaViva()){
-                                    System.out.print("X" + "  ");
+                                    System.out.print("\u001B[33m"+"X" + "\u001B[0m"+"  ");
                                 }else{
                                     System.out.print("\u001B[31m" + getNaveEnCoordenada(new Coordenada(i,j)).getTipo().toUpperCase().charAt(0) +"\u001B[0m" + "  ");
                                 }
@@ -316,35 +316,7 @@ public class Tablero {
         }
     }
 
-    /*
-    public void mostrarOculto() {
-        for (int i = -1; i < filas; i++) {
-            for (int j = -1; j < columnas; j++) {
-                if (i == -1) {
-                    System.out.print(j + "  ");
-                } else {
-                    if (j == -1)
-                        System.out.print(i + "   ");
-                    else {
-                        if(celdaOcupada(i, j) && !matriz[i][j].getEstaViva()){
-                            System.out.println(matriz[i][j].getTipo().toUpperCase().charAt(0) + "  ");
-                        }else {
-                            if (matriz[i][j] instanceof Impacto) {
-                                System.out.print("X" + "  ");
-                            } else if (matriz[i][j] instanceof Agua) {
-                                System.out.print("0" + "  ");
-                            } else {
-                                System.out.print("." + "  ");
-                            }
-                            }
 
-                    }
-
-                }
-            }
-            System.out.println();
-        }
-    }*/
 
     public Nave[][] getMatriz() {
         return matriz;
@@ -356,6 +328,16 @@ public class Tablero {
 
     public HashMap<Nave,ArrayList<Coordenada>> getCoordenadasNave(){
         return coordenadasNave;
+    }
+
+    public boolean estaLaNave(String nombreNave){
+        for (Nave nave : coordenadasNave.keySet()){
+            if(nave.getTipo().equalsIgnoreCase(nombreNave)){
+                return true;
+            }
+        }
+        return false;
+
     }
 
 }
