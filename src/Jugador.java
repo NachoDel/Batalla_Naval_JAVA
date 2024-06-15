@@ -18,6 +18,7 @@ public class Jugador {
     private ArrayList<PowerUp> powerUps;
 
 
+
     public Jugador(String nombre, int filas, int columnas) {
         this.nombre = nombre;
         tablero = new Tablero(filas, columnas);
@@ -101,7 +102,5 @@ public class Jugador {
             }
         }
     }
-
-
 
 }

@@ -87,8 +87,9 @@ public class Main {
                 j3.disparar(j4);
                 j4.getTablero().mostrarOculto();
 
-                j4.addPowerUp(fabricaPowerUp.crearPowerUp("Shield"));
-                j4.usarPowerUp("Shield");
+                j4.addPowerUp(fabricaPowerUp.crearPowerUp("Radar"));
+                j4.usarPowerUp("Radar");
+                j4.getTablero().mostrarOculto();
 
                 j3.disparar(j4);
                 j4.getTablero().mostrarOculto();

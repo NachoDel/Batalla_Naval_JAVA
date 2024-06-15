@@ -14,6 +14,18 @@ public class Coordenada {
         this.columna = 0;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Coordenada that = (Coordenada) obj;
+        return fila == that.fila && columna == that.columna;
+    }
+
     public void setFila(int fila) {
         this.fila = fila;
     }

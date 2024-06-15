@@ -6,6 +6,7 @@ import java.util.HashMap;
 import src.Naves.Agua;
 import src.Naves.Impacto;
 import src.Naves.Nave;
+import java.util.Random;
 
 public class Tablero {
     private int filas;
@@ -13,6 +14,9 @@ public class Tablero {
     private Nave[][] matriz;
     private int navesConVida;
     private HashMap<Nave,ArrayList<Coordenada>> mapaDeNaves;
+    private HashMap<Nave,ArrayList<Coordenada>> mapaDeNavesActual;
+    private Coordenada coordenadaAyudaRadar;
+    private boolean radarActivo = false;
 
     // constructor
     public Tablero(int filas, int columnas) {
@@ -21,6 +25,7 @@ public class Tablero {
         this.matriz = new Nave[filas][columnas];
         this.navesConVida = 0;
         this.mapaDeNaves = new HashMap<>();
+        this.mapaDeNavesActual = new HashMap<>();
     }
 
     /**
@@ -178,7 +183,11 @@ public class Tablero {
             listaCoordenadas.add(coord);
         }
         mapaDeNaves.put(nave, listaCoordenadas); //queda guardada la nave con sus coordenadas
+        mapaDeNavesActual.put(nave, listaCoordenadas);
     }
+
+
+
 
     /**
      * recibe un disparo en las coordenadas f,c si hay un barco en esa posicion
@@ -242,6 +251,8 @@ public class Tablero {
         return null;
     }
 
+
+
     /**
      * Devuelve las coordenadas de la nave que se encuentra en la coordenada pasada como argumento
      * @param coordenada coordenada a buscar
@@ -254,6 +265,35 @@ public class Tablero {
             System.out.println("No hay ninguna nave en esa coordenada");
         }
         return null;
+    }
+
+   /**
+     * Devuelve una coordenada de un barco vivo aleatorio
+     * @return Coordenada de un barco vivo aleatorio, null si no hay barcos vivos
+     */
+
+    public Coordenada obtenerCoordenadaBarcoRandom() {
+        ArrayList<Coordenada> coordenadasBarcosVivos = new ArrayList<>();
+        for (Nave nave : mapaDeNavesActual.keySet()){
+            if(nave.getEstaViva()){
+                coordenadasBarcosVivos.addAll(mapaDeNavesActual.get(nave));
+            }
+        }
+        if (coordenadasBarcosVivos.isEmpty()) {
+            return null; // No hay barcos vivos
+        }
+        Random rand = new Random();
+        int indiceAleatorio = rand.nextInt(coordenadasBarcosVivos.size());
+        return coordenadasBarcosVivos.get(indiceAleatorio);
+    }
+    public void setRadarActivo(boolean activo){
+        this.radarActivo = activo;
+    }
+    public void setCoordenadaAyudaRadar(Coordenada coordenada) {
+        this.coordenadaAyudaRadar = coordenada;
+    }
+    public Coordenada getCoordenadaAyudaRadar() {
+        return coordenadaAyudaRadar;
     }
 
     public boolean estaLaNave(String nombreNave){
@@ -285,6 +325,7 @@ public class Tablero {
     public HashMap<Nave,ArrayList<Coordenada>> getMapaDeNaves(){
         return mapaDeNaves;
     }
+
 
 
 
@@ -327,16 +368,21 @@ public class Tablero {
                 } else {
                     if (j == -1)
                         System.out.print(i + "   ");
-                    else {
-                        if(celdaOcupada(i, j)){
+                    else{
+                        Coordenada coord = new Coordenada(i,j);
+                        if (coord.equals(getCoordenadaAyudaRadar()) && radarActivo) {
+                            System.out.print("\033[32m" + "A" + "\033[0m" + "  "); // Imprime 'A' en color verde
+                            setRadarActivo(false);
+                    }
+                        else if (celdaOcupada(i, j)){
                             if(matriz[i][j] instanceof Agua){
                                 System.out.print("\u001B[34m"+ "0" +"\u001B[0m"+ "  ");
                             }
                             else if (matriz[i][j] instanceof Impacto) {
-                                if( getNaveEnCoordenada(new Coordenada(i,j)).getEstaViva()){
-                                    System.out.print(matriz[i][j].getTipo()+"  ");
-                                }else{
-                                    System.out.print("\u001B[31m" + getNaveEnCoordenada(new Coordenada(i,j)).getTipo().toUpperCase().charAt(0) +"\u001B[0m" + "  ");
+                                if (getNaveEnCoordenada(new Coordenada(i, j)).getEstaViva()) {
+                                    System.out.print(matriz[i][j].getTipo() + "  ");
+                                } else {
+                                    System.out.print("\u001B[31m" + getNaveEnCoordenada(new Coordenada(i, j)).getTipo().toUpperCase().charAt(0) + "\u001B[0m" + "  ");
                                 }
                             }else{
                                 System.out.print("." + "  ");

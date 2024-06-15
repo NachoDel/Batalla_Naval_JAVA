@@ -13,6 +13,9 @@ public class PowerUpFactory {
         else if (powerUpType.equalsIgnoreCase("Shield")) {
             return new Shield();
         }
+        else if(powerUpType.equalsIgnoreCase("Radar")){
+            return new RadarPU();
+        }
         return null;
 
     }
