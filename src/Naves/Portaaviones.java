@@ -13,4 +13,9 @@ public class Portaaviones extends Nave {
     public Portaaviones() {
         super("Portaaviones", vida);
     }
+
+    public void Revivir(){
+        this.Revive();
+        this.setVida(5);
+    }
 }

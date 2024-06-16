@@ -40,6 +40,9 @@ public class Nave {
         return input.equalsIgnoreCase("Y");
     }
 
+    public void Revive(){
+        estaViva = true;
+    }
     public boolean esVertical() {
         return vertical;
     }

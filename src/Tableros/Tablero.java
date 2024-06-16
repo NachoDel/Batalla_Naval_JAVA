@@ -1,17 +1,17 @@
 package src.Tableros;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.HashMap;
+import java.util.Random;
+import java.util.Scanner;
 import src.Naves.Agua;
 import src.Naves.Impacto;
 import src.Naves.Nave;
-import java.util.Random;
 
 public class Tablero {
     private int filas;
     private int columnas;
-    private Nave[][] matriz;
+    private Nave[][] matriz; 
     private int navesConVida;
     private HashMap<Nave,ArrayList<Coordenada>> mapaDeNaves;
     private HashMap<Nave,ArrayList<Coordenada>> mapaDeNavesActual;
@@ -196,7 +196,7 @@ public class Tablero {
      * @return true si se pudo hacer el disparo, false si era una zona ya disparada
      */
     public boolean recibirDisparo(Coordenada coord) {
-        // primero veo si esta ocupada prosigo sino, pongo "-" significa agua.
+        // primero veo si esta ocupada prosigo sino,ica agua.
         int f = coord.getFila();
         int c = coord.getColumna();
         if (celdaOcupada(f, c)) {
@@ -399,3 +399,5 @@ public class Tablero {
     }
 
 }
+
+

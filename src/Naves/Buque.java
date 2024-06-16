@@ -13,4 +13,9 @@ public class Buque extends Nave {
     public Buque() {
         super("Buque", vida);
     }
+
+    public void Revivir(){
+        this.Revive();
+        this.setVida(4);
+    }
 }

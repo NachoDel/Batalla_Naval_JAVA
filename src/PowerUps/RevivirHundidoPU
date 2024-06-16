@@ -1,0 +1,48 @@
+package src.PoweUps;
+
+import src.Tableros.Tablero;
+import src.Naves.Nave;
+import src.Coordenadas.Coordenada;
+
+public class RevivirHundidoPU extends PowerUP {
+    
+    public RevivirHundidoPU() {
+        nombre = "Revivir"
+    }
+    
+    @Override
+    public void activar() {
+        if(jugador.getBarcosHundidos().size() == 0){
+            System.out.println("No hay barcos hundidos para revivir");
+            return;
+        }
+        System.out.println("Reviviendo a un barco hundido al azar");
+        Tablero tableroJug = jugador.getTablero();
+        do{
+            Coordenada coordenada = tableroJug.obtenerCoordenadaBarcoRandom();
+            Nave barco = tableroJug.getBarco(coordenada);
+            if(!barco.getEstaViva()){
+                if(barco.getTipo().equals("Submarino")){
+                    system.out.println("Reviviendo submarino");
+                    Nave submarino = new Submarino();
+                    tableroJug.colocarNave(submarino);
+                }
+                if(barco.getTipo().equals("Acorazado")){
+                    system.out.println("Reviviendo Acorazado");
+                    Nave acorazado = new Acorazado();
+                    tableroJug.colocarNave(acorazado);
+                }
+                if(barco.getTipo().equals("Buque")){
+                    system.out.println("Reviviendo Buque");
+                    Nave buque = new buque();
+                    tableroJug.colocarNave(Buque);
+                }
+                else{
+                    system.out.println("Reviviendo Porta aviones");
+                    Nave portaAviones = new PortaAviones();
+                    tableroJug.colocarNave(portaAviones);
+                }
+            }
+    }while(barco.getEstaViva());
+    }
+}

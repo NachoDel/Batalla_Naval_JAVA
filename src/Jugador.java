@@ -1,21 +1,23 @@
 package src;
 
+import java.util.ArrayList;
 import src.Disparos.Disparo;
 import src.Disparos.DisparoSimple;
 import src.Naves.*;
 import src.PowerUps.PowerUp;
-import src.PowerUps.PowerUpFactory;
 import src.Tableros.Coordenada;
 import src.Tableros.Tablero;
-
-import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Jugador {
     private String nombre;
     private Tablero tablero;
     private Disparo disparo;
     private ArrayList<PowerUp> powerUps;
+    private int contAguas;
+    private int contAguasRacha;
+    private int contAcierto;
+    private int contAcieroRacha;
+    private int contDerribo; 
 
 
 
@@ -24,6 +26,11 @@ public class Jugador {
         tablero = new Tablero(filas, columnas);
         this.disparo = new DisparoSimple();
         powerUps = new ArrayList<>();
+        contAguas = 0;
+        contAguasRacha = 0;
+        contAcierto = 0;
+        contAcieroRacha = 0;
+        contDerribo = 0;
     }
 
     public void setDisparo(Disparo disparo) {

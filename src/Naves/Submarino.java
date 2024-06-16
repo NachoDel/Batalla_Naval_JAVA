@@ -13,4 +13,9 @@ public class Submarino extends Nave {
     public Submarino() {
         super("Submarino", vida);
     }
+
+    public void Revivir(){
+        this.Revive();
+        this.setVida(2);
+    }
 }

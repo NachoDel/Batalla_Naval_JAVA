@@ -13,4 +13,9 @@ public class Acorazado extends Nave {
     public Acorazado() {
         super("Acorazado",  vida);
     }
+
+    public void Revivir(){
+        this.Revive();
+        this.setVida(6);
+    }
 }
