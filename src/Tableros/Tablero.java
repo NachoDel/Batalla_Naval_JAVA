@@ -262,7 +262,7 @@ public class Tablero {
      */
     public ArrayList<Coordenada> getCoordenadasDeNave(Coordenada coordenada){
         try{
-            mapaDeNaves.get(getNaveEnCoordenada(coordenada));
+            return mapaDeNaves.get(getNaveEnCoordenada(coordenada));
         }catch (NullPointerException e){
             System.out.println("No hay ninguna nave en esa coordenada");
         }

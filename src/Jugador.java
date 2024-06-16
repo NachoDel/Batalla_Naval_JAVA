@@ -2,6 +2,7 @@ package src;
 
 import java.util.ArrayList;
 import src.Disparos.Disparo;
+import src.Disparos.DisparoDoble;
 import src.Disparos.DisparoSimple;
 import src.Naves.*;
 import src.PowerUps.PowerUp;
@@ -45,6 +46,9 @@ public class Jugador {
     public boolean disparar(Jugador oponente) {
         Coordenada coord = tablero.pedirCoordenadas();
         disparo.disparar(oponente.getTablero(), coord);
+        if(disparo instanceof DisparoDoble){
+            setDisparo(new DisparoSimple());
+        }
         return !(oponente.getTablero().getMatriz()[coord.getFila()][coord.getColumna()] instanceof Agua);
     }
 

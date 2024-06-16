@@ -10,6 +10,7 @@ public class DoubleShotPU extends PowerUp{
 
     @Override
     public void activar(){
+        jugador.setDisparo(new DisparoDoble());
         System.out.println("DoubleShot activado");
     }
 

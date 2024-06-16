@@ -62,19 +62,19 @@ public class Main {
                 Jugador j4 = new Jugador("Jugador 2", 10, 10);
 
                 Nave subma = new Submarino(true);
-                Coordenada c = new Coordenada(0,0);
+                Coordenada c = new Coordenada(0, 0);
                 j3.getTablero().rellenar(subma, c);
 
                 Nave buque = new Buque(true);
-                c = new Coordenada(c.getFila(), c.getColumna()+1);
+                c = new Coordenada(c.getFila(), c.getColumna() + 1);
                 j3.getTablero().rellenar(buque, c);
 
                 Nave subma2 = new Submarino(false);
-                Coordenada c2 = new Coordenada(0,0);
+                Coordenada c2 = new Coordenada(0, 0);
                 j4.getTablero().rellenar(subma2, c2);
 
                 Nave buque2 = new Buque(false);
-                c2 = new Coordenada(c2.getFila()+1, c2.getColumna());
+                c2 = new Coordenada(c2.getFila() + 1, c2.getColumna());
                 j4.getTablero().rellenar(buque2, c2);
 
 
@@ -84,14 +84,14 @@ public class Main {
                 System.out.println(" ");
                 j4.getTablero().mostrarTablero();
 
-                j4.addPowerUp(fabricaPowerUp.crearPowerUp("DoubleShot"));
-                j4.usarPowerUp("DoubleShot");
-
                 j3.disparar(j4);
                 j4.getTablero().mostrarOculto();
 
                 j3.disparar(j4);
                 j4.getTablero().mostrarOculto();
+
+                j3.addPowerUp(fabricaPowerUp.crearPowerUp("DoubleShot"));
+                j3.usarPowerUp("DoubleShot");
 
                 j3.disparar(j4);
                 j4.getTablero().mostrarOculto();
