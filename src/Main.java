@@ -84,12 +84,8 @@ public class Main {
                 System.out.println(" ");
                 j4.getTablero().mostrarTablero();
 
-                j3.disparar(j4);
-                j4.getTablero().mostrarOculto();
-
-                j4.addPowerUp(fabricaPowerUp.crearPowerUp("Radar"));
-                j4.usarPowerUp("Radar");
-                j4.getTablero().mostrarOculto();
+                j4.addPowerUp(fabricaPowerUp.crearPowerUp("DoubleShot"));
+                j4.usarPowerUp("DoubleShot");
 
                 j3.disparar(j4);
                 j4.getTablero().mostrarOculto();
@@ -97,6 +93,16 @@ public class Main {
                 j3.disparar(j4);
                 j4.getTablero().mostrarOculto();
 
+                j3.disparar(j4);
+                j4.getTablero().mostrarOculto();
+
+                j3.disparar(j4);
+                j4.getTablero().mostrarOculto();
+
+
+
+
+                j4.getTablero().mostrarTablero();
                 j3.disparar(j4);
                 j4.getTablero().mostrarOculto();
 

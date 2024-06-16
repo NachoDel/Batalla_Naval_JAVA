@@ -11,10 +11,13 @@ public class PowerUpFactory {
             return new DoubleShotPU();
         }
         else if (powerUpType.equalsIgnoreCase("Shield")) {
-            return new Shield();
+            return new ShieldPU();
         }
         else if(powerUpType.equalsIgnoreCase("Radar")){
             return new RadarPU();
+        }
+        else if(powerUpType.equalsIgnoreCase("Revivir")){
+            return new RevivirHundidoPU();
         }
         return null;
 

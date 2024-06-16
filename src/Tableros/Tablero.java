@@ -14,7 +14,6 @@ public class Tablero {
     private Nave[][] matriz; 
     private int navesConVida;
     private HashMap<Nave,ArrayList<Coordenada>> mapaDeNaves;
-    private HashMap<Nave,ArrayList<Coordenada>> mapaDeNavesActual;
     private Coordenada coordenadaAyudaRadar;
     private boolean radarActivo = false;
 
@@ -25,7 +24,6 @@ public class Tablero {
         this.matriz = new Nave[filas][columnas];
         this.navesConVida = 0;
         this.mapaDeNaves = new HashMap<>();
-        this.mapaDeNavesActual = new HashMap<>();
     }
 
     /**
@@ -106,8 +104,13 @@ public class Tablero {
             for (int i = coord.getFila(); i < coord.getFila() + nave.getVida(); i++) {// voy iterando filas segun vida del barco
                                                                             // partiendo en coord inicial
                 if (celdaOcupada(i, coord.getColumna())) {// si alguna esta ocupada retorno true
-                    System.out.println("Error al colocar  " + nave.getTipo() + " el lugar " + coord.getFila() + ","
-                            + coord.getColumna() + " esta ocupado por otra nave");
+                    if(matriz[coord.getFila()][coord.getColumna()] instanceof Impacto || matriz[coord.getFila()][coord.getColumna()] instanceof Agua){
+                        System.out.println("Error al colocar  " + nave.getTipo() + " el lugar " + coord.getFila() + ","
+                                + coord.getColumna() + " ya fue disparado");
+                    }else{
+                        System.out.println("Error al colocar  " + nave.getTipo() + " el lugar " + coord.getFila() + ","
+                                + coord.getColumna() + " esta ocupado por otra nave");
+                    }
                     return true;
                 }
             }
@@ -183,7 +186,6 @@ public class Tablero {
             listaCoordenadas.add(coord);
         }
         mapaDeNaves.put(nave, listaCoordenadas); //queda guardada la nave con sus coordenadas
-        mapaDeNavesActual.put(nave, listaCoordenadas);
     }
 
 
@@ -274,9 +276,9 @@ public class Tablero {
 
     public Coordenada obtenerCoordenadaBarcoRandom() {
         ArrayList<Coordenada> coordenadasBarcosVivos = new ArrayList<>();
-        for (Nave nave : mapaDeNavesActual.keySet()){
+        for (Nave nave : mapaDeNaves.keySet()){
             if(nave.getEstaViva()){
-                coordenadasBarcosVivos.addAll(mapaDeNavesActual.get(nave));
+                coordenadasBarcosVivos.addAll(mapaDeNaves.get(nave));
             }
         }
         if (coordenadasBarcosVivos.isEmpty()) {

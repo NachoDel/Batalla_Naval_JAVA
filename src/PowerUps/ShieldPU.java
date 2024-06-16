@@ -4,10 +4,10 @@ import src.Naves.Nave;
 
 import java.util.Scanner;
 
-public class Shield extends PowerUp {
+public class ShieldPU extends PowerUp {
 
 
-    public Shield(){
+    public ShieldPU(){
         nombre = "Shield";
     }
 
