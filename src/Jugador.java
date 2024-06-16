@@ -1,11 +1,14 @@
 package src;
 
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import src.Disparos.Disparo;
 import src.Disparos.DisparoDoble;
 import src.Disparos.DisparoSimple;
 import src.Naves.*;
 import src.PowerUps.PowerUp;
+import src.PowerUps.PowerUpFactory;
 import src.Tableros.Coordenada;
 import src.Tableros.Tablero;
 
@@ -14,10 +17,10 @@ public class Jugador {
     private Tablero tablero;
     private Disparo disparo;
     private ArrayList<PowerUp> powerUps;
-    private int contAguas;
+    //private int contAguas;
     private int contAguasRacha;
-    private int contAcierto;
-    private int contAcieroRacha;
+    //private int contAcierto;
+    private int contAciertoRacha;
     private int contDerribo; 
 
 
@@ -27,10 +30,10 @@ public class Jugador {
         tablero = new Tablero(filas, columnas);
         this.disparo = new DisparoSimple();
         powerUps = new ArrayList<>();
-        contAguas = 0;
+        //contAguas = 0;
         contAguasRacha = 0;
-        contAcierto = 0;
-        contAcieroRacha = 0;
+        //contAcierto = 0;
+        contAciertoRacha = 0;
         contDerribo = 0;
     }
 
@@ -49,7 +52,45 @@ public class Jugador {
         if(disparo instanceof DisparoDoble){
             setDisparo(new DisparoSimple());
         }
+        if(oponente.getTablero().getMatriz()[coord.getFila()][coord.getColumna()] instanceof Agua) {
+            //contAguas++;
+            contAguasRacha++;
+            //contAcierto = 0;
+            contAciertoRacha = 0;
+        }if(oponente.getTablero().getMatriz()[coord.getFila()][coord.getColumna()] instanceof Impacto){
+            //contAcierto++;
+            contAciertoRacha++;
+            //contAguas = 0;
+            contAguasRacha = 0;
+        }
+
+        merecePU();
         return !(oponente.getTablero().getMatriz()[coord.getFila()][coord.getColumna()] instanceof Agua);
+    }
+
+    private void merecePU(){
+        PowerUpFactory fabricaPU = new PowerUpFactory();
+
+        if(contAciertoRacha == 5){
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Felicidades!, te has ganado un power up, elige uno de los siguientes: ");
+            System.out.println("1. Shield   2. DisparoDoble");
+            int opcion = scanner.nextInt();
+            switch (opcion){
+                case 1:
+                    addPowerUp(fabricaPU.crearPowerUp("Shield"));
+                    break;
+                case 2:
+                    addPowerUp(fabricaPU.crearPowerUp("DisparoDoble"));
+                    break;
+            }
+        }
+
+        if(contAguasRacha == 5){
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("No te precupes, te daremos una ayuda, ahora tienes un radar! revelera una posicion aleatoria de un barco enemigo");
+            addPowerUp(fabricaPU.crearPowerUp("Radar"));
+        }
     }
 
 
@@ -102,7 +143,7 @@ public class Jugador {
         powerUps.add(powerUp);
     }
 
-    public void usarPowerUp(String nombre){
+    public void activarPowerUp(String nombre){
         for(PowerUp powerUp : powerUps){
             if(powerUp.getNombre().equalsIgnoreCase(nombre)){
                 powerUp.activar();
@@ -112,6 +153,14 @@ public class Jugador {
                 System.out.println("No tienes ese power up");
             }
         }
+    }
+
+    public String powerUpsToString(){
+        String s ="";
+        for(PowerUp powerUp : powerUps){
+            s+=("[ "+powerUp.getNombre()+ "] ");
+        }
+        return s;
     }
 
 }

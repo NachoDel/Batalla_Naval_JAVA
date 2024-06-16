@@ -41,11 +41,37 @@ public class Main {
                     do {
                         System.out.println("Turno de disparar de " + j1.getNombre());
                         j2.getTablero().mostrarOculto();
+                        String input = "N";
+                        while(!j1.getPowerUps().isEmpty()) {
+                            System.out.println("Tienes los siguientes powerUps disponibles, deseas usar alguno? Y: si, N: no");
+                            System.out.println(j1.powerUpsToString());
+                            input = scanner.next();
+                            if (input.equalsIgnoreCase("Y")) {
+                                System.out.println("Cual desea usar?");
+                                j1.activarPowerUp(scanner.nextLine());
+                            } else {
+                                break;
+                            }
+                        }
+
                     } while (j1.disparar(j2));
 
                     do {
-                        System.out.println("Turno de disparar de " + j2.getNombre());
+                        System.out.println("Turno de disparar de " + j1.getNombre());
                         j1.getTablero().mostrarOculto();
+                        String input = "N";
+                        while(!j2.getPowerUps().isEmpty()) {
+                            System.out.println("Tienes los siguientes powerUps disponibles, deseas usar alguno? Y: si, N: no");
+                            System.out.println(j2.powerUpsToString());
+                            input = scanner.next();
+                            if (input.equalsIgnoreCase("Y")) {
+                                System.out.println("Cual desea usar?");
+                                input = scanner.next();
+                                j2.activarPowerUp(input);
+                            } else {
+                                break;
+                            }
+                        }
                     } while (j2.disparar(j1));
 
                 }
@@ -91,7 +117,7 @@ public class Main {
                 j4.getTablero().mostrarOculto();
 
                 j3.addPowerUp(fabricaPowerUp.crearPowerUp("DoubleShot"));
-                j3.usarPowerUp("DoubleShot");
+                j3.activarPowerUp("DoubleShot");
 
                 j3.disparar(j4);
                 j4.getTablero().mostrarOculto();

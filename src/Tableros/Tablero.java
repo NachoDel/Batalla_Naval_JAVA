@@ -1,9 +1,7 @@
 package src.Tableros;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
+
 import src.Naves.Agua;
 import src.Naves.Impacto;
 import src.Naves.Nave;
@@ -51,15 +49,20 @@ public class Tablero {
     public Coordenada pedirCoordenadas() {
         Coordenada coordenada = new Coordenada();
         Scanner scanner = new Scanner(System.in);
-        do {
-            System.out.print("Ingrese fila: ");
-            coordenada.setFila(scanner.nextInt());
-            System.out.print("Ingrese columna: ");
-            coordenada.setColumna(scanner.nextInt());
-            if (!validarCoordenadas(coordenada)) {
-                System.out.println("Error: Coordenadas fuera de rango. Por favor, reingrese.");
-            }
-        } while (!validarCoordenadas(coordenada));
+        try{
+            do {
+                System.out.print("Ingrese fila: ");
+                coordenada.setFila(scanner.nextInt());
+                System.out.print("Ingrese columna: ");
+                coordenada.setColumna(scanner.nextInt());
+                if (!validarCoordenadas(coordenada)) {
+                    System.out.println("Error: Coordenadas fuera de rango. Por favor, reingrese.");
+                }
+            } while (!validarCoordenadas(coordenada));
+        }catch (InputMismatchException e){
+            System.out.println("Error, debe ingresar un numero entero");
+            return pedirCoordenadas();
+        }
 
         return coordenada;
     }
@@ -231,6 +234,7 @@ public class Tablero {
         } else {// si no estaba ocupada pongo agua
             matriz[f][c] = new Agua();
             System.out.println("Disparo al agua");
+
             return true;
         }
 

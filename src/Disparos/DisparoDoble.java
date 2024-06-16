@@ -27,8 +27,6 @@ public class DisparoDoble implements Disparo{
                 }
             }
         }
-
-
         //este while se corta cuando se hayan hecho 2 disparos
     }
 }

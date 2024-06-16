@@ -5,5 +5,4 @@ import src.Tableros.Tablero;
 
 public interface Disparo {
     void disparar(Tablero tablero, Coordenada coord);
-
 }
