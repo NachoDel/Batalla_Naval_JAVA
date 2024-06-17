@@ -23,23 +23,29 @@ public class Main {
                         System.out.println("El tamanio del tablero debe ser mayor o igual a 10");
                 } while (n < 10);
 
+
                 Jugador j1 = new Jugador("Jugador 1", n, n);
                 Jugador j2 = new Jugador("Jugador 2", n, n);
+
+                j1.setOponente(j2);
+                j2.setOponente(j1);
 
                 j1.getTablero().mostrarTablero();
                 System.out.println("Colocando naves de " + j1.getNombre());
                 j1.crearYColocarNaves();
-                System.out.println("\n" + "\n" + "\n" + "\n");
+                System.out.println("\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n");
 
                 j2.getTablero().mostrarTablero();
                 System.out.println("Colocando naves de " + j2.getNombre());
                 j2.crearYColocarNaves();
 
+                System.out.println("\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n");
+
                 System.out.println("Comienza disparando " + j1.getNombre());
 
                 while (j1.getTablero().getNavesConVida() != 0 || j2.getTablero().getNavesConVida() != 0) {
                     do {
-                        System.out.println("Turno de disparar de " + j1.getNombre());
+                        System.out.println("\u001B[33m"+ "Turno de disparar de " + j1.getNombre()+"\u001B[0m");
                         j2.getTablero().mostrarOculto();
                         String input = "N";
                         while(!j1.getPowerUps().isEmpty()) {
@@ -48,7 +54,8 @@ public class Main {
                             input = scanner.next();
                             if (input.equalsIgnoreCase("Y")) {
                                 System.out.println("Cual desea usar?");
-                                j1.activarPowerUp(scanner.nextLine());
+                                input = scanner.next();
+                                j1.activarPowerUp(input);
                             } else {
                                 break;
                             }
@@ -56,8 +63,13 @@ public class Main {
 
                     } while (j1.disparar(j2));
 
+                    String enter;
+                    System.out.println("Presiona Enter para continuar...");
+                    enter = scanner.next();
+                    System.out.println("\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n");
+
                     do {
-                        System.out.println("Turno de disparar de " + j1.getNombre());
+                        System.out.println("\u001B[36m"+ "Turno de disparar de " + j2.getNombre()+ "\u001B[0m");
                         j1.getTablero().mostrarOculto();
                         String input = "N";
                         while(!j2.getPowerUps().isEmpty()) {
@@ -73,6 +85,10 @@ public class Main {
                             }
                         }
                     } while (j2.disparar(j1));
+
+                    System.out.println("Presiona Enter para continuar...");
+                    enter = scanner.next();
+                    System.out.println("\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n");
 
                 }
                 if (j2.getTablero().getNavesConVida() == 0) {
@@ -140,13 +156,6 @@ public class Main {
 
                 j3.disparar(j4);
                 j4.getTablero().mostrarOculto();
-
-
-
-
-
-
-
 
 
             default:

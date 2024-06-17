@@ -14,6 +14,7 @@ import src.Tableros.Tablero;
 
 public class Jugador {
     private String nombre;
+    private Jugador oponente;
     private Tablero tablero;
     private Disparo disparo;
     private ArrayList<PowerUp> powerUps;
@@ -35,6 +36,7 @@ public class Jugador {
         //contAcierto = 0;
         contAciertoRacha = 0;
         contDerribo = 0;
+        this.oponente = oponente;
     }
 
     public void setDisparo(Disparo disparo) {
@@ -73,7 +75,7 @@ public class Jugador {
 
         if(contAciertoRacha == 5){
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Felicidades!, te has ganado un power up, elige uno de los siguientes: ");
+            System.out.println("¡Felicidades 5 aciertos seguidos!, te has ganado un power up, elige uno de los siguientes: ");
             System.out.println("1. Shield   2. DisparoDoble");
             int opcion = scanner.nextInt();
             switch (opcion){
@@ -81,15 +83,23 @@ public class Jugador {
                     addPowerUp(fabricaPU.crearPowerUp("Shield"));
                     break;
                 case 2:
-                    addPowerUp(fabricaPU.crearPowerUp("DisparoDoble"));
+                    addPowerUp(fabricaPU.crearPowerUp("DoubleShot"));
                     break;
             }
+        }
+
+        if(contAciertoRacha == 7){
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("¡No paras! ¡7 aciertos seguidos!, te has ganado un power up, podras revivir un barco hundido");
+            addPowerUp(fabricaPU.crearPowerUp("Revivir"));
+            contAciertoRacha = 0;
         }
 
         if(contAguasRacha == 5){
             Scanner scanner = new Scanner(System.in);
             System.out.println("No te precupes, te daremos una ayuda, ahora tienes un radar! revelera una posicion aleatoria de un barco enemigo");
             addPowerUp(fabricaPU.crearPowerUp("Radar"));
+            contAguasRacha = 0;
         }
     }
 
@@ -163,4 +173,11 @@ public class Jugador {
         return s;
     }
 
+    public Jugador getOponente() {
+        return oponente;
+    }
+
+    public void setOponente(Jugador oponente) {
+        this.oponente = oponente;
+    }
 }

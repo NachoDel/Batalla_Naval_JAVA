@@ -11,8 +11,8 @@ public class RadarPU extends PowerUp{
     public void activar(){
         jugador.getTablero().setRadarActivo(true);
         System.out.println("Radar activado");
-        Coordenada coordenadaBarco = jugador.getTablero().obtenerCoordenadaBarcoRandom();
+        Coordenada coordenadaBarco = jugador.getOponente().getTablero().obtenerCoordenadaBarcoRandom();
         jugador.getTablero().setCoordenadaAyudaRadar(coordenadaBarco);
-        System.out.println("Ayuda: Hay un barco en la posición " + coordenadaBarco.getFila() + ", " + coordenadaBarco.getColumna());
+        System.out.println("Radar: Hay un barco en la posición " + coordenadaBarco.getFila() + ", " + coordenadaBarco.getColumna());
     }
 }
