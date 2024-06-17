@@ -11,6 +11,11 @@ public class Buque extends Nave {
 
     // Constructor sin parametros
     public Buque() {
-        super("Buque", true,  vida);
+        super("Buque", vida);
+    }
+
+    public void Revivir(){
+        this.Revive();
+        this.setVida(4);
     }
 }

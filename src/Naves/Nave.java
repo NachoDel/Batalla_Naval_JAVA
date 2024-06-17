@@ -7,31 +7,42 @@ public class Nave {
     private boolean vertical;
     private int vida;// tamanio
     private boolean estaViva;
+    private boolean shield;
 
     public Nave(String tipo, boolean vertical, int vida) {
         this.tipo = tipo;
         this.vertical = vertical;
         this.vida = vida;
         estaViva = true;
+        shield = false;
 
     }
 
     public Nave(String tipo, int vida) {
         this.tipo = tipo;
         this.vida = vida;
-        vertical = inputVertical();
+        vertical = askVerticalidad();
+        estaViva = true;
+        shield = false;
+    }
+
+    /**
+     * Pregunta al usuario si desea que la nave sea vertical
+     * @return true si la nave es vertical, false si no
+     */
+    private boolean askVerticalidad(){
+        Scanner scanner = new Scanner(System.in);
+        String input;
+        do {
+            System.out.println("Desea que la nave sea vertical? (Y: si, N: no)");
+            input = scanner.next();
+        } while (!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N"));
+        return input.equalsIgnoreCase("Y");
+    }
+
+    public void Revive(){
         estaViva = true;
     }
-
-    private boolean inputVertical() {
-        System.out.print("Desea que " + tipo + " sea vertical?: ");
-        Scanner scanner = new Scanner(System.in);
-        int s = scanner.nextInt();
-
-        return s == 1;
-
-    }
-
     public boolean esVertical() {
         return vertical;
     }
@@ -58,9 +69,27 @@ public class Nave {
 
     // quita tanta vida como se le indique
     public void quitarVida() {
+        if(shield){
+            System.out.println("Nave protegida con escudo, no se le quita vida");
+            shield = false;
+            return;
+        }
         vida--;
         if (vida == 0) {
             estaViva = false;
         }
     }
+
+    public String toString(){
+        return tipo + " " + vida + " de vida";
+    }
+
+    public boolean getShield(){
+        return shield;
+    }
+
+    public void setShield(boolean shield){
+        this.shield = shield;
+    }
+
 }

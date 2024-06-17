@@ -11,6 +11,11 @@ public class Portaaviones extends Nave {
 
     // Constructor sin parametros
     public Portaaviones() {
-        super("Portaaviones", true, vida);
+        super("Portaaviones", vida);
+    }
+
+    public void Revivir(){
+        this.Revive();
+        this.setVida(5);
     }
 }

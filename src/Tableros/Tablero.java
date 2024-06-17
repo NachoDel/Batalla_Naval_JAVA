@@ -1,8 +1,7 @@
 package src.Tableros;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.HashMap;
+import java.util.*;
+
 import src.Naves.Agua;
 import src.Naves.Impacto;
 import src.Naves.Nave;
@@ -10,9 +9,11 @@ import src.Naves.Nave;
 public class Tablero {
     private int filas;
     private int columnas;
-    private Nave[][] matriz;
+    private Nave[][] matriz; 
     private int navesConVida;
-    private HashMap<Nave,ArrayList<Coordenada>> coordenadasNave;
+    private HashMap<Nave,ArrayList<Coordenada>> mapaDeNaves;
+    private Coordenada coordenadaAyudaRadar;
+    private boolean radarActivo = false;
 
     // constructor
     public Tablero(int filas, int columnas) {
@@ -20,52 +21,71 @@ public class Tablero {
         this.columnas = columnas;
         this.matriz = new Nave[filas][columnas];
         this.navesConVida = 0;
-        this.coordenadasNave = new HashMap<>();
+        this.mapaDeNaves = new HashMap<>();
     }
 
-    // devuelve true si las coordenadas que se le pase como argumento estan dentro
-    // del rango de la matriz
-    public boolean validarCoordenadas(int f, int c) {
-        if (f < 0 || f > filas || c < 0 || c > columnas) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public int[] pedirCoordenadas() {
-        int[] coordenadas = new int[2];
-        Scanner scanner = new Scanner(System.in);
-        do {
-            System.out.print("Ingrese fila: ");
-            coordenadas[0] = scanner.nextInt();
-            System.out.print("Ingrese columna: ");
-            coordenadas[1] = scanner.nextInt();
-            if (!validarCoordenadas(coordenadas[0], coordenadas[1])) {
-                System.out.println("Error: Coordenadas fuera de rango. Por favor, reingrese.");
-            }
-        } while (!validarCoordenadas(coordenadas[0], coordenadas[1]));
-        return coordenadas;
-    }
-
-    // me dice si una casilla esta ocupada o esta vacia (null)
+    /**
+     * me dice si una casilla esta ocupada o esta vacia (null)
+     *
+     * @param f fila inicial
+     * @param c columna inicial
+     * @return true si esta ocupada, false si esta vacia
+     */
     private boolean celdaOcupada(int f, int c) {
         return matriz[f][c] != null;
     }
 
-    // valida que el barco entre en la matriz retorna true si entra false si no
-    // entra
-    public boolean entraElBarco(Nave nave, int filInicial, int colInicial) {
+    // devuelve true si las coordenadas que se le pase como argumento estan dentro
+    // del rango de la matriz
+    private boolean validarCoordenadas(Coordenada c) {
+        return ((c.getFila() >= 0 && c.getFila() < filas) && (c.getColumna() >= 0 && c.getColumna() < columnas));
+    }
+
+    /**
+     * pide coordenada al usuario, valida que este dentro del rango de la matriz
+       hasta que no sea valida no deja de pedirlas
+     * @return objeto Coordenada con las coordenadas validas
+     */
+    public Coordenada pedirCoordenadas() {
+        Coordenada coordenada = new Coordenada();
+        Scanner scanner = new Scanner(System.in);
+        try{
+            do {
+                System.out.print("Ingrese fila: ");
+                coordenada.setFila(scanner.nextInt());
+                System.out.print("Ingrese columna: ");
+                coordenada.setColumna(scanner.nextInt());
+                if (!validarCoordenadas(coordenada)) {
+                    System.out.println("Error: Coordenadas fuera de rango. Por favor, reingrese.");
+                }
+            } while (!validarCoordenadas(coordenada));
+        }catch (InputMismatchException e){
+            System.out.println("Error, debe ingresar un numero entero");
+            return pedirCoordenadas();
+        }
+
+        return coordenada;
+    }
+
+
+    /**
+     * Este método valida si un barco puede encajar dentro de la matriz basándose en su posición inicial.
+     *
+     * @param nave El barco que se necesita colocar en la matriz.
+     * @param coord La coordenada inicial para el barco.
+     * @return true si el barco cabe dentro de la matriz, false en caso contrario.
+     */
+    private boolean entraElBarco(Nave nave, Coordenada coord) {
 
         if (nave.esVertical()) {// chequeo para barco vertical
-            if ((filInicial + nave.getVida()) > filas) {// si no entra verticalmente
+            if ((coord.getFila() + nave.getVida()) > filas) {// si no entra verticalmente
                 System.out.println("Error al colocar " + nave.getTipo() + "  en esa posicion no entra en la matriz de "
                         + filas + " filas y " + columnas + " columnas");
                 return false;
             } else
                 return true;// si entra verticalmente retorna true
         } else {// chequeo para barco horizontal
-            if ((colInicial + nave.getVida()) > columnas) {// si no entra horizontalmente
+            if ((coord.getColumna() + nave.getVida()) > columnas) {// si no entra horizontalmente
                 System.out.println("Error al colocar " + nave.getTipo() + "  en esa posicion no entra en la matriz de "
                         + filas + " filas y " + columnas + " columnas");
                 return false;
@@ -75,25 +95,35 @@ public class Tablero {
         }
     }
 
-    // valida si alguna posicion del barco que quiero poner ya esta ocupada por otro
-    // barco
-    public boolean estaOcupado(Nave nave, int filInicial, int colInicial) {
+    /**
+     * Este método verifica si alguna posición del barco que se desea colocar ya está ocupada por otro barco.
+     *
+     * @param nave El barco que se necesita colocar en la matriz.
+     * @param coord La coordenada inicial para el barco.
+     * @return true si alguna posición del barco está ocupada, false si todas las posiciones están libres.
+     */
+    private boolean estaOcupado(Nave nave, Coordenada coord) {
         if (nave.esVertical()) { // si es vertical chequeo verticalmente
-            for (int i = filInicial; i < filInicial + nave.getVida(); i++) {// voy iterando filas segun vida del barco
+            for (int i = coord.getFila(); i < coord.getFila() + nave.getVida(); i++) {// voy iterando filas segun vida del barco
                                                                             // partiendo en coord inicial
-                if (celdaOcupada(i, colInicial)) {// si alguna esta ocupada retorno true
-                    System.out.println("Error al colocar  " + nave.getTipo() + " el lugar " + filInicial + ","
-                            + colInicial + " esta ocupado por otra nave");
+                if (celdaOcupada(i, coord.getColumna())) {// si alguna esta ocupada retorno true
+                    if(matriz[coord.getFila()][coord.getColumna()] instanceof Impacto || matriz[coord.getFila()][coord.getColumna()] instanceof Agua){
+                        System.out.println("Error al colocar  " + nave.getTipo() + " el lugar " + coord.getFila() + ","
+                                + coord.getColumna() + " ya fue disparado");
+                    }else{
+                        System.out.println("Error al colocar  " + nave.getTipo() + " el lugar " + coord.getFila() + ","
+                                + coord.getColumna() + " esta ocupado por otra nave");
+                    }
                     return true;
                 }
             }
             return false; // si al terminar de iterar no hay ninguna ocupada retorno false
         } else { // si el barco es horizontal chequeo horizonalmente
-            for (int i = colInicial; i < colInicial + nave.getVida(); i++) {// voy iterando columnas segun vida del
+            for (int i = coord.getColumna(); i < coord.getColumna() + nave.getVida(); i++) {// voy iterando columnas segun vida del
                                                                             // barco partiendo en coord inicial
-                if (celdaOcupada(filInicial, i)) {// si alguna esta ocupada retorno true
-                    System.out.println("Error al colocar  " + nave.getTipo() + " el lugar " + filInicial + ","
-                            + colInicial + " esta ocupado por otra nave");
+                if (celdaOcupada(coord.getFila(), i)) {// si alguna esta ocupada retorno true
+                    System.out.println("Error al colocar  " + nave.getTipo() + " el lugar " + coord.getFila() + ","
+                            + coord.getColumna() + " esta ocupado por otra nave");
                     return true;
                 }
             }
@@ -101,105 +131,214 @@ public class Tablero {
         }
     }
 
-    // recibe el barco y la coordenada inicial (la punta del barco), rellena con el
-    // barco
-    public void rellenar(Nave nave, int filInicial, int colInicial) {
+    /**
+     * Recibe una nave y la coloca pidiendo coordenadas al usuario, valida que
+     * estas coordenas sean validas, que el barco entre en la matriz y que no este
+     * ocupado el lugar donde se quiere poner (valida todo)
+     * @param nave nave a colocar
+     */
+    public void colocarNave(Nave nave) {
+        // solo rellena si el barco entra y no esta ocupado ese lugar
+        Coordenada coord = pedirCoordenadas();
+
+        while (!entraElBarco(nave, coord) || estaOcupado(nave, coord)) {
+            System.out.println("Reingrese coordenadas");
+            coord = pedirCoordenadas();
+        }
+
+        rellenar(nave, coord);
+
+    }
+
+    /**
+     * Este método recibe un barco y una coordenada inicial (la punta del barco), y rellena la matriz con el barco.
+     * tanto si es vertical como horizontal. Agrega las coordenadas de la nave a un hashmap con la nave como key.
+     * @param nave El barco que se necesita colocar en la matriz.
+     * @param coord La coordenada inicial para el barco.
+     */
+    public void rellenar(Nave nave, Coordenada coord) {
         // si es vertical relleno verticalmente (de arriba hacia abajo)
         if (nave.esVertical()) {
-            for (int i = filInicial; i < filInicial + nave.getVida(); i++) {// voy iterando filas
+            for (int i = coord.getFila(); i < coord.getFila() + nave.getVida(); i++) {// voy iterando filas
 
-                matriz[i][colInicial] = nave;
+                matriz[i][coord.getColumna()] = nave;
             }
         }
 
         // si es horizontal relleno horizontalmente (izquierda a derecha)
         else {
-            for (int i = colInicial; i < colInicial + nave.getVida(); i++) {// voy iterando columnas
-                matriz[filInicial][i] = nave;
+            for (int i = coord.getColumna(); i < coord.getColumna() + nave.getVida(); i++) {// voy iterando columnas
+                matriz[coord.getFila()][i] = nave;
             }
         }
         navesConVida++;
-    }
-
-    /*
-     * public void colocarNave(Nave nave, int filInicial, int colInicial) {
-     * // solo rellena si el barco entra y no esta ocupado ese lugar
-     * if (entraElBarco(nave, filInicial, colInicial) && !estaOcupado(nave,
-     * filInicial, colInicial))
-     * rellenar(nave, filInicial, colInicial);
-     * else{
-     * if()
-     * }
-     * 
-     * }
-     */
-    public void colocarNave(Nave nave) {
-        // solo rellena si el barco entra y no esta ocupado ese lugar
-        int[] coord = pedirCoordenadas();
-        int filInicial = coord[0];
-        int colInicial = coord[1];
-
-        while (!entraElBarco(nave, filInicial, colInicial) || estaOcupado(nave, filInicial, colInicial)) {
-            System.out.println("Reingrese coordenadas");
-            coord = pedirCoordenadas();
-            filInicial = coord[0];
-            colInicial = coord[1];
-        }
-
-        rellenar(nave, filInicial, colInicial);
         //Hasta aca logica para pedir coordenadas y colocar la nave
 
-        //Ahora logica para guardar las coordenadas de esa nave
-        ArrayList<Coordenada> listaCoordenadas = new ArrayList<Coordenada>();
+        //Ahora logica para guardar las coordenadas de esa nave en un hashmap con la nave como key
+        ArrayList<Coordenada> listaCoordenadas = new ArrayList<>();
         //guardo la  coordenada inicial primero
-        Coordenada cord = new Coordenada(filInicial, colInicial);
-        listaCoordenadas.add(cord);
+        listaCoordenadas.add(coord);
         //guardo el resto de coordenadas
-        for (int i = nave.getVida(); i > 0; i--){
+
+        for (int i = 0; i < nave.getVida()-1; i++){ // el bucle termina en vida -1 porque ya guarde la coordenada inicial antes
             if(nave.esVertical()){
-                cord = new Coordenada(filInicial + i, colInicial);
+                coord = new Coordenada(coord.getFila()+1, coord.getColumna());
             }else{
-                cord = new Coordenada(filInicial, colInicial + i);
+                coord = new Coordenada(coord.getFila() , coord.getColumna()+1 );
             }
-            listaCoordenadas.add(cord);
+            listaCoordenadas.add(coord);
         }
-        coordenadasNave.put(nave, listaCoordenadas); //queda guardada la nave con sus coordenadas
+        mapaDeNaves.put(nave, listaCoordenadas); //queda guardada la nave con sus coordenadas
     }
-    public ArrayList<Coordenada> getCoordenadasNave(Coordenada coordenada){
-        for (Nave nave : coordenadasNave.keySet()){
-            for (Coordenada cord : coordenadasNave.get(nave)){
-                if(cord.equals(coordenada)){
-                    return coordenadasNave.get(nave);
+
+
+
+
+    /**
+     * recibe un disparo en las coordenadas f,c si hay un barco en esa posicion
+     * quita vida al barco y marca con "X" si no hay barco marca con "0"
+     * @param coord coordenadas del disparo
+     * @return true si se pudo hacer el disparo, false si era una zona ya disparada
+     */
+    public boolean recibirDisparo(Coordenada coord) {
+        // primero veo si esta ocupada prosigo sino,ica agua.
+        int f = coord.getFila();
+        int c = coord.getColumna();
+        if (celdaOcupada(f, c)) {
+            // si esta ocupada pero con impacto o con agua repite tiro
+            if (matriz[f][c] instanceof Impacto || matriz[f][c] instanceof Agua) {
+                System.out.println("repite tiro, zona ya disparada");
+                return false;
+            } else {// si esta ocupado pero no es impacto ni agua significa que hay un barco
+                    if(!matriz[f][c].getShield()){
+                        if (matriz[f][c].getVida() > 1) {
+                            // si el barco aguanta el tiro se le quita la vida y
+                            // se marca con impacto "X" el lugar
+                            matriz[f][c].quitarVida();
+                            matriz[f][c] = new Impacto();
+                            System.out.println("Disparo efectivo");
+                            //si la nave se destruyo, reduzco naves con vida
+
+                        }else{
+                            matriz[f][c].quitarVida();
+                            matriz[f][c] = new Impacto();
+                            System.out.println("BARCO HUNDIDO");
+                            navesConVida--;
+                        }
+                    }else{
+                        matriz[f][c].quitarVida();
+                    }
+                return true;
+            }
+
+        } else {// si no estaba ocupada pongo agua
+            matriz[f][c] = new Agua();
+            System.out.println("Disparo al agua");
+
+            return true;
+        }
+
+    }
+
+
+    /**
+     * Devuelve la nave que se encuentra en la coordenada pasada como argumento
+     * @param coordenada coordenada a buscar
+     * @return Nave que se encuentra en la coordenada, null si no hay ninguna nave en esa coordenada
+     */
+    public Nave getNaveEnCoordenada(Coordenada coordenada){
+        for (Nave nave : mapaDeNaves.keySet()){
+            for (Coordenada cord : mapaDeNaves.get(nave)){
+                if(cord.getFila() == coordenada.getFila() && cord.getColumna() == coordenada.getColumna()){
+                    return nave;
                 }
             }
         }
         return null;
     }
 
-    //Tener en cuenta que no se puede llenar el tablero desde aca NOTHANDLED
-    public void colocarNaveParaTest(Nave nave) {
-        // Inserto como coordenadas inciales las (0,0)
-        int[] coord = new int[2];
-        coord[0] = 0;
-        coord[1] = 0;
-        // Si llega a estar ocupado, sumo en 1 la fila, para ir recorriendo hacia abajo
-        while (estaOcupado(nave, coord[0], coord[1]) && coord[0] < this.filas) {
-            coord[0]++;
+
+
+    /**
+     * Devuelve las coordenadas de la nave que se encuentra en la coordenada pasada como argumento
+     * @param coordenada coordenada a buscar
+     * @return ArrayList de Coordenadas de la nave que se encuentra en la coordenada, null si no hay ninguna nave en esa coordenada
+     */
+    public ArrayList<Coordenada> getCoordenadasDeNave(Coordenada coordenada){
+        try{
+            return mapaDeNaves.get(getNaveEnCoordenada(coordenada));
+        }catch (NullPointerException e){
+            System.out.println("No hay ninguna nave en esa coordenada");
         }
-        if(coord[0] == this.filas){
-            coord[0] = 0;
-        }
-        // En caso de que toda la fila este ocupada, Recorro por columnas
-        while (estaOcupado(nave, coord[0], coord[1]) && coord[1] < this.columnas) {
-            coord[1]++;
-        }
-        rellenar(nave, coord[0], coord[1]);
+        return null;
     }
 
-    // muestra el tablero, si no hay nada es ".", si hay un barco muestra el
-    // caracter correspondiente a su tipo
-    // si hubo disparo efectivo muestra "X", si hubo disparo errado muestra "0"
-    // tambien imprime numero de filas y columnas
+   /**
+     * Devuelve una coordenada de un barco vivo aleatorio
+     * @return Coordenada de un barco vivo aleatorio, null si no hay barcos vivos
+     */
+
+    public Coordenada obtenerCoordenadaBarcoRandom() {
+        ArrayList<Coordenada> coordenadasBarcosVivos = new ArrayList<>();
+        for (Nave nave : mapaDeNaves.keySet()){
+            if(nave.getEstaViva()){
+                coordenadasBarcosVivos.addAll(mapaDeNaves.get(nave));
+            }
+        }
+        if (coordenadasBarcosVivos.isEmpty()) {
+            return null; // No hay barcos vivos
+        }
+        Random rand = new Random();
+        int indiceAleatorio = rand.nextInt(coordenadasBarcosVivos.size());
+        return coordenadasBarcosVivos.get(indiceAleatorio);
+    }
+    public void setRadarActivo(boolean activo){
+        this.radarActivo = activo;
+    }
+    public void setCoordenadaAyudaRadar(Coordenada coordenada) {
+        this.coordenadaAyudaRadar = coordenada;
+    }
+    public Coordenada getCoordenadaAyudaRadar() {
+        return coordenadaAyudaRadar;
+    }
+
+    public boolean estaLaNave(String nombreNave){
+        for (Nave nave : mapaDeNaves.keySet()){
+            if(nave.getTipo().equalsIgnoreCase(nombreNave)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Nave getNave(String nombreNave){
+        for (Nave nave : mapaDeNaves.keySet()){
+            if(nave.getTipo().equalsIgnoreCase(nombreNave)){
+                return nave;
+            }
+        }
+        return null;
+    }
+
+    public Nave[][] getMatriz() {
+        return matriz;
+    }
+
+    public int getNavesConVida() {
+        return navesConVida;
+    }
+
+    public HashMap<Nave,ArrayList<Coordenada>> getMapaDeNaves(){
+        return mapaDeNaves;
+    }
+
+
+
+
+    /**
+     * muestra el tablero, si no hay nada es ".", si hay un barco muestra el
+     * caracter correspondiente a su tipo, se usa cuando se colocan las naves unicamente
+     */
     public void mostrarTablero() {
         for (int i = -1; i < filas; i++) {
             for (int j = -1; j < columnas; j++) {
@@ -222,6 +361,11 @@ public class Tablero {
         }
     }
 
+
+    /**
+     * muestra el tablero con "." si fue impactado muestra "X" y si fue
+     * agua muestra "0" se usa cuando se esta disparando (vista del otro jugador)
+     */
     public void mostrarOculto() {
         for (int i = -1; i < filas; i++) {
             for (int j = -1; j < columnas; j++) {
@@ -230,65 +374,36 @@ public class Tablero {
                 } else {
                     if (j == -1)
                         System.out.print(i + "   ");
-                    else {
-                        if (matriz[i][j] instanceof Impacto) {
-                            System.out.print("X" + "  ");
-                        } else if (matriz[i][j] instanceof Agua) {
-                            System.out.print("0" + "  ");
-                        } else {
+                    else{
+                        Coordenada coord = new Coordenada(i,j);
+                        if (coord.equals(getCoordenadaAyudaRadar()) && radarActivo) {
+                            System.out.print("\033[32m" + "A" + "\033[0m" + "  "); // Imprime 'A' en color verde
+                            setRadarActivo(false);
+                    }
+                        else if (celdaOcupada(i, j)){
+                            if(matriz[i][j] instanceof Agua){
+                                System.out.print("\u001B[34m"+ "0" +"\u001B[0m"+ "  ");
+                            }
+                            else if (matriz[i][j] instanceof Impacto) {
+                                if (getNaveEnCoordenada(new Coordenada(i, j)).getEstaViva()) {
+                                    System.out.print(matriz[i][j].getTipo() + "  ");
+                                } else {
+                                    System.out.print("\u001B[31m" + getNaveEnCoordenada(new Coordenada(i, j)).getTipo().toUpperCase().charAt(0) + "\u001B[0m" + "  ");
+                                }
+                            }else{
+                                System.out.print("." + "  ");
+                            }
+                        }else{
                             System.out.print("." + "  ");
                         }
-
                     }
-
                 }
+
             }
             System.out.println();
         }
     }
 
-    // dispara a una coordenada de la matriz, con un cierto danio (por si se agrega
-    // en un futuro algun powerup que quite mas de uno de vida)
-    // retorna true si el disparo pudo hacerse, false si esa zona ya fue disparada
-    // previamente
-    public boolean recibirDisparo(int f, int c) {
-        // primero veo si esta ocupada prosigo sino, pongo "-" significa agua.
-        if (celdaOcupada(f, c)) {
-            // si esta ocupada pero con impacto o con agua repite tiro
-            if (matriz[f][c] instanceof Impacto || matriz[f][c] instanceof Agua) {
-                System.out.println("repite tiro, zona ya disparada");
-                return false;
-            } else {// si esta ocupado pero no es impacto ni agua significa que hay un barco
-                if (matriz[f][c].getVida() > 0) {
-                    // si el barco aguanta el tiro se le quita la vida y
-                    // se marca con impacto "X" el lugar
-                    matriz[f][c].quitarVida();
-                    matriz[f][c] = new Impacto();
-                    System.out.println("Disparo efectivo");
-                    //si la nave se destruyo, reduzco naves con vida
-                    if(!matriz[f][c].getEstaViva()) {
-                        System.out.println("Barco hundido");
-                        navesConVida--;
-                    }
-                }
-                return true;
-            }
-
-        } else {// si no estaba ocupada pongo agua
-
-            matriz[f][c] = new Agua();
-            System.out.println("Disparo al agua");
-            return true;
-        }
-
-    }
-
-    public Nave[][] getMatriz() {
-        return matriz;
-    }
-
-    public int getNavesConVida() {
-        return navesConVida;
-    }
-
 }
+
+

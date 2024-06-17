@@ -1,9 +1,14 @@
 package src.Disparos;
 
+import src.Tableros.Coordenada;
 import src.Tableros.Tablero;
 
 public class DisparoSimple implements Disparo {
-    public void disparar(Tablero tablero, int x, int y){
-        tablero.recibirDisparo(x, y);
+
+    @Override
+    public void disparar(Tablero tablero, Coordenada coord){
+        tablero.recibirDisparo(coord);
     }
+
+
 }

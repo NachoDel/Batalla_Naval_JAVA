@@ -6,11 +6,16 @@ public class Acorazado extends Nave {
 
     // Definicion del constructor
     public Acorazado(boolean vertical) {
-        super("Acorazado", vertical, vida);
+        super("Acorazado", vida);
     }
 
     // Constructor sin parametros
     public Acorazado() {
-        super("Acorazado", true,  vida);
+        super("Acorazado",  vida);
+    }
+
+    public void Revivir(){
+        this.Revive();
+        this.setVida(6);
     }
 }
