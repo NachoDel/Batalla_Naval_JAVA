@@ -65,7 +65,7 @@ public class Main {
 
                     String enter;
                     System.out.println("Presiona Enter para continuar...");
-                    enter = scanner.next();
+                    enter = scanner.nextLine();
                     System.out.println("\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n");
 
                     do {
@@ -87,7 +87,7 @@ public class Main {
                     } while (j2.disparar(j1));
 
                     System.out.println("Presiona Enter para continuar...");
-                    enter = scanner.next();
+                    enter = scanner.nextLine();
                     System.out.println("\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n");
 
                 }
@@ -102,6 +102,9 @@ public class Main {
                 //para simular y debuguear
                 Jugador j3 = new Jugador("Jugador 1", 10, 10);
                 Jugador j4 = new Jugador("Jugador 2", 10, 10);
+
+                j3.setOponente(j4);
+                j4.setOponente(j3);
 
                 Nave subma = new Submarino(true);
                 Coordenada c = new Coordenada(0, 0);
@@ -132,9 +135,9 @@ public class Main {
                 j3.disparar(j4);
                 j4.getTablero().mostrarOculto();
 
-                j3.addPowerUp(fabricaPowerUp.crearPowerUp("DoubleShot"));
-                j3.activarPowerUp("DoubleShot");
-
+                j3.addPowerUp(fabricaPowerUp.crearPowerUp("Radar"));
+                j3.activarPowerUp("Radar");
+                
                 j3.disparar(j4);
                 j4.getTablero().mostrarOculto();
 
