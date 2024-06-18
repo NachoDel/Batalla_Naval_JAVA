@@ -22,7 +22,7 @@ public class RevivirHundidoPU extends PowerUp {
             System.out.println("No hay barcos hundidos para revivir");
             System.out.println("Añadiendo un nuevo submarino");
             cantidadBarcos++;
-            Nave submarino = new Submarino();
+            Nave submarino = new Submarino(false);
             jugador.getTablero().colocarNave(submarino);
             return;
         }
@@ -33,7 +33,7 @@ public class RevivirHundidoPU extends PowerUp {
                 switch (barco.getTipo()) {
                     case "Submarino" -> {
                         System.out.println("Reviviendo submarino");
-                        Nave submarino = new Submarino();
+                        Nave submarino = new Submarino(false);
                         jugador.getTablero().colocarNave(submarino);
                         System.out.println("Submarino revivido");
                         return;
