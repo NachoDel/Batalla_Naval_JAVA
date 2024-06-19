@@ -107,8 +107,10 @@ public class Main {
                 }
                 if (j2.getTablero().getNavesConVida() == 0) {
                     System.out.println("Gano " + j1.getNombre());
+                    imprimirFinal(j1, j2);
                 } else {
                     System.out.println("Gano " + j2.getNombre());
+                    imprimirFinal(j1, j2);
                 }
                 break;
 
@@ -174,9 +176,16 @@ public class Main {
                 j3.disparar(j4);
                 j4.getTablero().mostrarOculto();
 
+                imprimirFinal(j3, j4);
 
             default:
                 break;
         }
+    }
+    private static void imprimirFinal(Jugador jug1, Jugador jug2){
+        System.out.println("Gracias por jugar");
+        System.out.println("Imprimiendo estadisticas");
+        jug1.imprimirEstadisticas();
+        jug2.imprimirEstadisticas();
     }
 }
