@@ -1,6 +1,7 @@
 package src.PowerUps;
 
 import src.Naves.Nave;
+import src.Scanear;
 
 import java.util.Scanner;
 
