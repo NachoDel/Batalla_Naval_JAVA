@@ -59,12 +59,10 @@ public class Jugador {
         if(oponente.getTablero().getMatriz()[coord.getFila()][coord.getColumna()] instanceof Agua) {
             contAguas++;
             contAguasRacha++;
-            contAcierto = 0;
             contAciertoRacha = 0;
         }if(oponente.getTablero().getMatriz()[coord.getFila()][coord.getColumna()] instanceof Impacto){
             contAcierto++;
             contAciertoRacha++;
-            contAguas = 0;
             contAguasRacha = 0;
         }
 
