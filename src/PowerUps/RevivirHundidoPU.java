@@ -23,7 +23,9 @@ public class RevivirHundidoPU extends PowerUp {
             System.out.println("Añadiendo un nuevo submarino");
             cantidadBarcos++;
             Nave submarino = new Submarino(false);
-            jugador.getTablero().colocarNave(submarino);
+            while(!jugador.getTablero().colocarNave(submarino)){
+                System.out.println("Reingrese coordenadas");
+            }
             return;
         }
         System.out.println("Reviviendo a un barco hundido al azar");
@@ -35,7 +37,9 @@ public class RevivirHundidoPU extends PowerUp {
                         System.out.println("Reviviendo submarino");
                         boolean v = jugador.askVerticalidad();
                         Nave submarino = new Submarino(v);
-                        jugador.getTablero().colocarNave(submarino);
+                        while(!jugador.getTablero().colocarNave(submarino)){
+                            System.out.println("Reingrese coordenadas");
+                        }
                         System.out.println("Submarino revivido");
                         return;
                     }
@@ -43,7 +47,9 @@ public class RevivirHundidoPU extends PowerUp {
                         System.out.println("Reviviendo Acorazado");
                         boolean v = jugador.askVerticalidad();
                         Nave acorazado = new Acorazado(v);
-                        jugador.getTablero().colocarNave(acorazado);
+                        while(!jugador.getTablero().colocarNave(acorazado)){
+                            System.out.println("Reingrese coordenadas");
+                        }
                         System.out.println("Acorazado revivido");
                         return;
                     }
@@ -51,7 +57,9 @@ public class RevivirHundidoPU extends PowerUp {
                         System.out.println("Reviviendo Buque");
                         boolean v = jugador.askVerticalidad();
                         Nave buque = new Buque(v);
-                        jugador.getTablero().colocarNave(buque);
+                        while(!jugador.getTablero().colocarNave(buque)){
+                            System.out.println("Reingrese coordenadas");
+                        }
                         System.out.println("Buque revivido");
                         return;
                     }
@@ -59,7 +67,9 @@ public class RevivirHundidoPU extends PowerUp {
                         System.out.println("Reviviendo Porta aviones");
                         boolean v = jugador.askVerticalidad();
                         Nave portaAviones = new Portaaviones(v);
-                        jugador.getTablero().colocarNave(portaAviones);
+                        while(!jugador.getTablero().colocarNave(portaAviones)){
+                            System.out.println("Reingrese coordenadas");
+                        }
                         System.out.println("Porta aviones revivido");
                     }
                 }

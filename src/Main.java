@@ -14,7 +14,8 @@ public class Main {
         int m = Menu.menu();
         switch (m) {
             case 1:
-                Scanner scanner = new Scanner(System.in);
+                Scanear scanear = Scanear.getInstance();
+                Scanner scanner = scanear.getScanner();
                 int n;
                 do {
                     System.out.println("Ingrese tamanio del tablero: ");

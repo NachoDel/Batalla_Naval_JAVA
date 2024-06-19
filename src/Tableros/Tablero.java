@@ -5,6 +5,7 @@ import java.util.*;
 import src.Naves.Agua;
 import src.Naves.Impacto;
 import src.Naves.Nave;
+import src.Scanear;
 
 public class Tablero {
     private int filas;
@@ -48,7 +49,8 @@ public class Tablero {
      */
     public Coordenada pedirCoordenadas() {
         Coordenada coordenada = new Coordenada();
-        Scanner scanner = new Scanner(System.in);
+        Scanear scanear = Scanear.getInstance();
+        Scanner scanner = scanear.getScanner();
         try{
             do {
                 System.out.print("Ingrese fila: ");
@@ -137,17 +139,16 @@ public class Tablero {
      * ocupado el lugar donde se quiere poner (valida todo)
      * @param nave nave a colocar
      */
-    public void colocarNave(Nave nave) {
+    public boolean colocarNave(Nave nave) {
         // solo rellena si el barco entra y no esta ocupado ese lugar
         Coordenada coord = pedirCoordenadas();
 
-        while (!entraElBarco(nave, coord) || estaOcupado(nave, coord)) {
-            System.out.println("Reingrese coordenadas");
-            coord = pedirCoordenadas();
+        if(!entraElBarco(nave, coord) || estaOcupado(nave, coord)) {
+            return false;
         }
 
         rellenar(nave, coord);
-
+        return true;
     }
 
     /**
