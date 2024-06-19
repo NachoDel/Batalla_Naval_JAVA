@@ -18,11 +18,12 @@ public class Jugador {
     private Tablero tablero;
     private Disparo disparo;
     private ArrayList<PowerUp> powerUps;
-    //private int contAguas;
+    private int contAguas;
     private int contAguasRacha;
-    //private int contAcierto;
+    private int contAcierto;
     private int contAciertoRacha;
-    private int contDerribo; 
+    private int contDerribo;
+    private int contPowerUpsUsados;
 
 
 
@@ -31,11 +32,12 @@ public class Jugador {
         tablero = new Tablero(filas, columnas);
         this.disparo = new DisparoSimple();
         powerUps = new ArrayList<>();
-        //contAguas = 0;
+        contAguas = 0;
         contAguasRacha = 0;
-        //contAcierto = 0;
+        contAcierto = 0;
         contAciertoRacha = 0;
         contDerribo = 0;
+        contPowerUpsUsados = 0;
         this.oponente = oponente;
     }
 
@@ -55,12 +57,12 @@ public class Jugador {
             setDisparo(new DisparoSimple());
         }
         if(oponente.getTablero().getMatriz()[coord.getFila()][coord.getColumna()] instanceof Agua) {
-            //contAguas++;
+            contAguas++;
             contAguasRacha++;
             //contAcierto = 0;
             contAciertoRacha = 0;
         }if(oponente.getTablero().getMatriz()[coord.getFila()][coord.getColumna()] instanceof Impacto){
-            //contAcierto++;
+            contAcierto++;
             contAciertoRacha++;
             //contAguas = 0;
             contAguasRacha = 0;
@@ -174,6 +176,7 @@ public class Jugador {
             if(powerUp.getNombre().equalsIgnoreCase(nombre)){
                 powerUp.activar();
                 powerUps.remove(powerUp);
+                contPowerUpsUsados++;
                 return;
             }else{
                 System.out.println("No tienes ese power up");
@@ -210,5 +213,13 @@ public class Jugador {
 
     public void setOponente(Jugador oponente) {
         this.oponente = oponente;
+    }
+
+    public void imprimirEstadisticas(){
+        System.out.println("Estadisticas de "+nombre);
+        System.out.println("Aciertos: "+contAcierto);
+        System.out.println("Aguas: "+contAguas);
+        System.out.println("Derribos: "+contDerribo);
+        System.out.println("PowerUps usados: "+contPowerUpsUsados);
     }
 }
