@@ -3,7 +3,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GetNaveEncordenadaTest {
+public class TableroTest {
 
     @Mock
     private Tablero tableroMock;
