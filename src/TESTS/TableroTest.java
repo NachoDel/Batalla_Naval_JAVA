@@ -151,11 +151,34 @@ public class TableroTest {
 
     @Test
     public void getNaveEnCoordenada2(){ //obtener nave en coordenada que no esta
-        //obtenemos nave en 3,3
+        //obtenemos nave en 1,2
         Coordenada coordenada = new Coordenada(1,2);
         Nave nave = tablero.getNaveEnCoordenada(coordenada);
         //deberia ser un buque
         Assertions.assertNull(nave);
+
+    }
+
+    @Test
+    public void obtenerCoordenadaBarcoRandom(){ //obtener coordenada de barco random
+
+        //primero pedimos coordenada de barco random cuando no hay barcos
+        Coordenada coordenada = tablero.obtenerCoordenadaBarcoRandom();
+        //debe ser null
+        Assertions.assertNull(coordenada);
+
+        //ahora colocamos un barco
+        String simulatedInput = "2\n5\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(simulatedInput.getBytes());
+        System.setIn(in);
+        tablero.colocarNave(buque);
+
+        //pedimos coordenada barco random
+        coordenada = tablero.obtenerCoordenadaBarcoRandom();
+
+        //debe ser distinto de null
+        Assertions.assertNotNull(coordenada);
+
 
     }
 
