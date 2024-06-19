@@ -296,6 +296,9 @@ public class Tablero {
     public void setRadarActivo(boolean activo){
         this.radarActivo = activo;
     }
+    public boolean getRadarActivo(){
+        return this.radarActivo;
+    }
     public void setCoordenadaAyudaRadar(Coordenada coordenada) {
         this.coordenadaAyudaRadar = coordenada;
     }
