@@ -1,21 +1,18 @@
 package src.TESTS;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Mock;
-import src.Naves.Acorazado;
-import src.Naves.Buque;
-import src.Naves.Nave;
+import src.Naves.*;
 import src.Tableros.Coordenada;
 import src.Tableros.Tablero;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 import static org.mockito.Mockito.*;
 
 public class TableroTest {
+
     private Buque buque;
 
     private Tablero tablero;
@@ -25,10 +22,12 @@ public class TableroTest {
 
     @BeforeEach
     void setUp() {
+
         tablero = new Tablero(10,10);
         buque = new Buque();
         acorazado = mock(Acorazado.class);
     }
+
 
     @Test
     @DisplayName("GIVEN a ship WHEN colocarNave() THEN return true")
@@ -59,7 +58,7 @@ public class TableroTest {
         boolean result = tablero.colocarNave(buque);
 
         Assertions.assertFalse(result);
-        
+
 
     }
 
@@ -78,6 +77,58 @@ public class TableroTest {
 
         boolean result = tablero.colocarNave(acorazado);
 
+        Assertions.assertFalse(result);
+
+    }
+
+    @Test
+    public void recibirDisparo(){ //disparo en lugar donde hay nave
+        //mandamos coordenada 3,3
+        String simulatedInput = "3\n3\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(simulatedInput.getBytes());
+        System.setIn(in);
+
+        //colocamos nave en 3,3
+        tablero.colocarNave(buque);
+        int vidaAntes= buque.getVida();
+        //disparamos alli
+        Coordenada coordenada = new Coordenada(3,3);
+        boolean result = tablero.recibirDisparo(coordenada);
+
+        //true porque le dimos
+        Assertions.assertTrue(result);
+        //revisamos que haya impacto luego del disparo
+        Assertions.assertInstanceOf(Impacto.class, tablero.getMatriz()[coordenada.getFila()][coordenada.getColumna()]);
+        //revisamos que la vida del barco haya disminuido
+        Assertions.assertEquals(buque.getVida(), vidaAntes - 1);
+
+    }
+
+    @Test
+    public void recibirDisparo2(){ //disparo en lugar donde no hay nave
+
+        //disparamos alli
+        Coordenada coordenada = new Coordenada(3,3);
+        boolean result = tablero.recibirDisparo(coordenada);
+
+        //true porque le dimos
+        Assertions.assertTrue(result);
+        //revisamos que haya agua luego del disparo
+        Assertions.assertInstanceOf(Agua.class, tablero.getMatriz()[coordenada.getFila()][coordenada.getColumna()]);
+
+
+    }
+
+    @Test
+    public void recibirDisparo3(){ //disparo en lugar donde ya se disparo
+
+        Coordenada coordenada = new Coordenada(3,3);
+        tablero.recibirDisparo(coordenada);
+
+        //disparamos alli de nuevo
+        boolean result = tablero.recibirDisparo(coordenada);
+
+        //false porque ya se disparo
         Assertions.assertFalse(result);
 
     }
