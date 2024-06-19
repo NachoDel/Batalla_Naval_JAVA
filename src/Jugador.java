@@ -51,9 +51,6 @@ public class Jugador {
     public boolean disparar(Jugador oponente) {
         Coordenada coord = tablero.pedirCoordenadas();
         disparo.disparar(oponente.getTablero(), coord);
-        if(disparo instanceof DisparoDoble){
-            setDisparo(new DisparoSimple());
-        }
         if(oponente.getTablero().getMatriz()[coord.getFila()][coord.getColumna()] instanceof Agua) {
             //contAguas++;
             contAguasRacha++;
@@ -65,7 +62,13 @@ public class Jugador {
             //contAguas = 0;
             contAguasRacha = 0;
         }
+        if(disparo instanceof DisparoDoble){
+            setDisparo(new DisparoSimple());
+        }
 
+        if(oponente.getTablero().getNavesConVida() == 0){
+            return false;
+        }
         merecePU();
         return !(oponente.getTablero().getMatriz()[coord.getFila()][coord.getColumna()] instanceof Agua);
     }

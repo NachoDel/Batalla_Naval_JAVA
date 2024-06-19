@@ -77,6 +77,10 @@ public class Main {
 
                     } while (j1.disparar(j2));
 
+                    if(j2.getTablero().getNavesConVida() == 0){
+                        break;
+                    }
+
                     String enter;
                     System.out.println("Presiona Enter para continuar...");
                     enter = scanner.nextLine();
@@ -100,6 +104,10 @@ public class Main {
                         }
                     } while (j2.disparar(j1));
 
+                    if(j1.getTablero().getNavesConVida() == 0){
+                        break;
+                    }
+
                     System.out.println("Presiona Enter para continuar...");
                     enter = scanner.nextLine();
                     System.out.println("\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n");
@@ -112,67 +120,6 @@ public class Main {
                 }
                 break;
 
-            case 2:
-                //para simular y debuguear
-                Jugador j3 = new Jugador("Jugador 1", 10, 10);
-                Jugador j4 = new Jugador("Jugador 2", 10, 10);
-
-                j3.setOponente(j4);
-                j4.setOponente(j3);
-
-                Nave subma = new Submarino(true);
-                Coordenada c = new Coordenada(0, 0);
-                j3.getTablero().rellenar(subma, c);
-
-                Nave buque = new Buque(true);
-                c = new Coordenada(c.getFila(), c.getColumna() + 1);
-                j3.getTablero().rellenar(buque, c);
-
-                Nave subma2 = new Submarino(false);
-                Coordenada c2 = new Coordenada(0, 0);
-                j4.getTablero().rellenar(subma2, c2);
-
-                Nave buque2 = new Buque(false);
-                c2 = new Coordenada(c2.getFila() + 1, c2.getColumna());
-                j4.getTablero().rellenar(buque2, c2);
-
-
-                PowerUpFactory fabricaPowerUp = new PowerUpFactory();
-
-                j3.getTablero().mostrarTablero();
-                System.out.println(" ");
-                j4.getTablero().mostrarTablero();
-
-                j3.disparar(j4);
-                j4.getTablero().mostrarOculto();
-
-                j3.disparar(j4);
-                j4.getTablero().mostrarOculto();
-
-                j3.addPowerUp(fabricaPowerUp.crearPowerUp("Radar"));
-                j3.activarPowerUp("Radar");
-                
-                j3.disparar(j4);
-                j4.getTablero().mostrarOculto();
-
-                j3.disparar(j4);
-                j4.getTablero().mostrarOculto();
-
-
-
-
-                j4.getTablero().mostrarTablero();
-                j3.disparar(j4);
-                j4.getTablero().mostrarOculto();
-
-                j3.disparar(j4);
-                j4.getTablero().mostrarOculto();
-
-                j3.disparar(j4);
-                j4.getTablero().mostrarOculto();
-
-                j3.disparar(j4);
-                j4.getTablero().mostrarOculto();
 
 
             default:
