@@ -1,20 +1,16 @@
 package src.TESTS;
 
+import org.junit.Test;
 import src.Jugador;
 import org.mockito.Mockito;
 import src.Naves.Portaaviones;
 import src.Naves.Submarino;
 import src.PowerUps.RadarPU;
 import src.Tableros.Coordenada;
-import src.PowerUps.RevivirHundidoPU;
-import src.PowerUps.PowerUpFactory;
 
-import org.junit.jupiter.api.Test;
 import src.Tableros.Tablero;
 
 import static org.junit.jupiter.api.Assertions.*;
-import java.io.ByteArrayInputStream;
-import java.util.Scanner;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
