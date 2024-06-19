@@ -1,6 +1,8 @@
 package src.TESTS;
 
 import src.Jugador;
+import src.Tableros.Tablero;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,11 +13,11 @@ public class TableroTest {
     @Test
     public void testObtenerCoordenadaBarcoRandom() {
         // Crea mock de  ObtenerCoordenadaBarcoRandom
-        ObtenerCoordenadaBarcoRandom obtenerCoordenadaBarcoRandomMock = Mockito.mock(ObtenerCoordenadaBarcoRandom.class);
+        Tablero obtenerCoordenadaBarcoRandomMock = Mockito.mock(Tablero.class);
 
         // Define esperado
-        int expectedX = 5;
-        int expectedY = 3;
+        int esperadaX = 5;
+        int esperadaY = 3;
 
         // sEteo de comportamiento
         when(obtenerCoordenadaBarcoRandomMock.obtenerCoordenadaX()).thenReturn(expectedX);
@@ -26,7 +28,7 @@ public class TableroTest {
         int actualY = obtenerCoordenadaBarcoRandomMock.obtenerCoordenadaY();
 
         // Prueba
-        assertEquals(expectedX, actualX);
-        assertEquals(expectedY, actualY);
+        assertEquals(esperadaX, actualX);
+        assertEquals(esperadaY, actualY);
     }
 }
