@@ -47,7 +47,7 @@ public class Main {
                 System.out.println("Colocando naves de " + j2.getNombre());
                 j2.crearYColocarNaves();
 
-                System.out.println("\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n");
+                System.out.println("\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n");
 
                 System.out.println("Comienza disparando " + j1.getNombre());
 
