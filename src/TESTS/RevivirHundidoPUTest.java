@@ -1,97 +1,90 @@
 package src.TESTS;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.mockito.Mock;
 import src.Jugador;
+import src.Naves.Acorazado;
+import src.Naves.Buque;
 import src.Naves.Submarino;
 import src.Tableros.Coordenada;
 import src.PowerUps.RevivirHundidoPU;
 import src.PowerUps.PowerUpFactory;
 
 import org.junit.jupiter.api.Test;
+import src.Tableros.Tablero;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.io.ByteArrayInputStream;
 import java.util.Scanner;
 
 public class RevivirHundidoPUTest{
 
+    private Jugador jugador;
+    private PowerUpFactory factoryPU;
+    @Mock
+    private Acorazado acorazado;
+
+
+    @BeforeEach
+    void setUp() {
+        factoryPU = new PowerUpFactory();
+        jugador = new Jugador("jugadorTest", 10, 10);
+        acorazado = mock(Acorazado.class);
+    }
+
     //Caso nave hundida
     @Test
-    public void activarTest1(){
-        //Mockeo del jugador con su tablero y submarino
-        Jugador jugadorMock = new Jugador("mock", 3, 3);
-        Coordenada coordMock1 = new Coordenada(0, 0);
-        Coordenada coordMock2 = new Coordenada(0, 1);
-        jugadorMock.getTablero().rellenar(new Submarino(false), coordMock1); //Coloca el submarino en la coordenada (0,0)
-        //---------------------------------------------
-        //Mockeo del powerUp
-        PowerUpFactory factoryMock = new PowerUpFactory();
-        RevivirHundidoPU revivirMock = (RevivirHundidoPU) factoryMock.crearPowerUp("Revivir");
-        jugadorMock.addPowerUp(revivirMock);
-        //---------------------------------------------
-        //Mockeo de la entrada del usuario
-        //String simulatedInput = "n\n1\n0\n"; NO LO PUEDO USAR, YA QUE ASKVERTICALIDAD ME RESETEA
-                                               //LA SIMULACION DE LOS IMPUTS, CAMBIE TMB LA APARICION DE SUBMARINO EN POWERUP
-                                               //LO INSTA SETIE EN VERTICAL:FALSE
-        String simulatedInput = "1\n0\n";
-        ByteArrayInputStream input = new ByteArrayInputStream(simulatedInput.getBytes());
-        System.setIn(input);
-        //---------------------------------------------
+    public void activarTest1(){ //Caso en el que no hay barcos hundidos
+        String simulatedInput = "0\n0\n0\n1\n0\n2\n0\n3\nY\n0\n9\n" ;//coord para 4 barcos verticalidad y colocar nuevo barco
+        ByteArrayInputStream in = new ByteArrayInputStream(simulatedInput.getBytes());
+        System.setIn(in);
 
-        //Guardado de estados para despues comprar
-        int navesVivas = jugadorMock.getTablero().getNavesConVida();
-        assertEquals(1, navesVivas);
-        //---------------------------------------------
+        //colocamos mocks de barcos en tablero
+        jugador.getTablero().colocarNave(acorazado);
+        jugador.getTablero().colocarNave(acorazado);
+        jugador.getTablero().colocarNave(acorazado);
+        jugador.getTablero().colocarNave(acorazado);
 
-        //Destruccion del submarino
-        jugadorMock.getTablero().recibirDisparo(coordMock1);
-        jugadorMock.getTablero().recibirDisparo(coordMock2);
-        assertEquals(0, jugadorMock.getTablero().getNavesConVida());
-        //---------------------------------------------
+        int cantBarcosAntes = jugador.getTablero().getNavesConVida();
 
-        //Activo el powerUp
-        jugadorMock.activarPowerUp("Revivir");
-        //---------------------------------------------
+        //usamos PU
+        jugador.addPowerUp(factoryPU.crearPowerUp("Revivir"));
+        jugador.activarPowerUp("Revivir");
 
-        //Comprobacion de que se ha revivido la nave
-        assertEquals(1, navesVivas);
-        //---------------------------------------------
+        //naves con vida debera ser mayor a la cant de barcos antes de usar el PU
+        Assertions.assertEquals(jugador.getTablero().getNavesConVida(), cantBarcosAntes+1);
+        Assertions.assertNotNull(jugador.getTablero().getNave("Submarino"));
+
+
     }
 
     //Caso en el que todas las naves estan vivas
     @Test
-    public void activarTest2(){
-        //Mockeo del jugador con su tablero y submarino
-        Jugador jugadorMock = new Jugador("mock", 10, 10);
-        Coordenada coordMock = new Coordenada(0, 0);
-        jugadorMock.getTablero().rellenar(new Submarino(false), coordMock); //Coloca el submarino en la coordenada (0,0)
-        Coordenada coordMock2 = new Coordenada(1, 0);
-        jugadorMock.getTablero().rellenar(new Submarino(false), coordMock2); //Coloca el submarino en la coordenada (0,0)
-        Coordenada coordMock3 = new Coordenada(2, 0);
-        jugadorMock.getTablero().rellenar(new Submarino(false), coordMock3); //Coloca el submarino en la coordenada (0,0)
-        Coordenada coordMock4 = new Coordenada(3, 0);
-        jugadorMock.getTablero().rellenar(new Submarino(false), coordMock4); //Coloca el submarino en la coordenada (0,0)
-        //---------------------------------------------
-        //Mockeo del powerUp
-        PowerUpFactory factoryMock = new PowerUpFactory();
-        RevivirHundidoPU revivirMock = (RevivirHundidoPU) factoryMock.crearPowerUp("Revivir");
-        jugadorMock.addPowerUp(revivirMock);
-        //---------------------------------------------
-        //Mockeo de la entrada del usuario
-        String simulatedInput = "4\n0\n"; //LO MISMO DEL TEST 1
-        ByteArrayInputStream input = new ByteArrayInputStream(simulatedInput.getBytes());
-        System.setIn(input);
-        //---------------------------------------------
+    public void activarTest2(){ //Caso en el hay barcos hundidos
 
-        //Activo el powerUp
-        jugadorMock.activarPowerUp("Revivir");
-        //---------------------------------------------
+        String simulatedInput = "\n0\n1\nY\n0\n9\n" ;//coord para barco verticalidad y colocar nuevo barco
+        ByteArrayInputStream in = new ByteArrayInputStream(simulatedInput.getBytes());
+        System.setIn(in);
 
-        //Comprovacion que se ha añadido una nave
-        assertEquals(5, jugadorMock.getTablero().getNavesConVida());
-        //---------------------------------------------
+        //colocamos mocks de barcos en tablero
+        jugador.getTablero().colocarNave(acorazado);
+        int cantBarcosAntes = jugador.getTablero().getNavesConVida();
+
+        when(acorazado.getEstaViva()).thenReturn(false);
+        when(acorazado.getTipo()).thenReturn("Acorazado");
+        //usamos PU
+        jugador.addPowerUp(factoryPU.crearPowerUp("Revivir"));
+        jugador.activarPowerUp("Revivir");
+
+        //naves con vida debera ser mayor a la cant de barcos antes de usar el PU
+        Assertions.assertEquals(jugador.getTablero().getNavesConVida(), cantBarcosAntes+1);
 
 
     }
-
 
 
 }
