@@ -1,6 +1,8 @@
 package src.TESTS;
 
 import src.Jugador;
+import org.mockito.Mockito;
+import src.Naves.Portaaviones;
 import src.Naves.Submarino;
 import src.PowerUps.RadarPU;
 import src.Tableros.Coordenada;
@@ -8,35 +10,62 @@ import src.PowerUps.RevivirHundidoPU;
 import src.PowerUps.PowerUpFactory;
 
 import org.junit.jupiter.api.Test;
+import src.Tableros.Tablero;
+
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.ByteArrayInputStream;
 import java.util.Scanner;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 public class RadarPUTest {
     @Test
     public void activarRadarTest(){
         //Mockeo del jugador y su oponente con sus tablero y submarinos
-        Jugador jugadorMock = new Jugador("mock", 5, 5);
-        Jugador oponenteMock = new Jugador("mock", 5, 5);
-        jugadorMock.setOponente(oponenteMock);
-        //crea un naves y lo coloca en una posicion especifica en el tablero del oponente
-        Coordenada coordMock1 = new Coordenada(0, 0);
-        Coordenada coordMock2 = new Coordenada(0, 1);
-        Coordenada coordMock3 = new Coordenada(0, 2);
-        oponenteMock.getTablero().rellenar(new Submarino(false), coordMock1); //Coloca el submarino en la coordenada (0,0
-        oponenteMock.getTablero().rellenar(new Submarino(false), coordMock2); //Coloca el submarino en la coordenada (0,1)
-        oponenteMock.getTablero().rellenar(new Submarino(true), coordMock3); //Coloca el submarino en la coordenada (0,2)
-        
-        //---------------------------------------------
-        // Crear un objeto de la clase RadarPU y agregarlo al jugador
-        PowerUpFactory factoryMock = new PowerUpFactory();
-        RadarPU RadarMock = (RadarPU) factoryMock.crearPowerUp("Radar");
-        jugadorMock.addPowerUp(RadarMock);
+        Jugador jugadorMock = Mockito.mock(Jugador.class);
+        Jugador oponenteMock = Mockito.mock(Jugador.class);
 
-        // Activar el powerup radar
+        // Creo un mock de la clase Tablero
+        Tablero tableroMock = Mockito.mock(Tablero.class);
+        Tablero tableroMockOponente = Mockito.mock(Tablero.class);
+
+        // Configuro el comportamiento del mock del oponente
+        when(jugadorMock.getTablero()).thenReturn(tableroMock);
+        when(oponenteMock.getTablero()).thenReturn(tableroMockOponente);
+        when(jugadorMock.getOponente()).thenReturn(oponenteMock);
+
+        // Creao un mock de la clase Coordenada
+        Coordenada coordMock1 = Mockito.mock(Coordenada.class);
+        Coordenada coordMock2 = Mockito.mock(Coordenada.class);
+
+        // Configuro el comportamiento del mock de Coordenada
+        when(coordMock1.getFila()).thenReturn(0);
+        when(coordMock1.getColumna()).thenReturn(0);
+        when(coordMock2.getFila()).thenReturn(0);
+        when(coordMock2.getColumna()).thenReturn(1);
+
+        when(tableroMockOponente.obtenerCoordenadaBarcoRandom()).thenReturn(coordMock1);
+
+        // Creo un mock de la clase Submarino
+        Submarino submarinoMock = Mockito.mock(Submarino.class);
+        Portaaviones portaavionesMock = Mockito.mock(Portaaviones.class);
+
+        // lleno el tablero con las naves
+        tableroMock.rellenar(submarinoMock, coordMock1);
+        tableroMock.rellenar(portaavionesMock, coordMock2);
+
+        // Creo un objeto de la clase RadarPU
+        RadarPU radarMock = new RadarPU();
+        radarMock.setJugador(jugadorMock);
+        radarMock.activar();
+
+
+        // Llamo al método que estoy probando
         jugadorMock.activarPowerUp("Radar");
 
-        // Verificar si el powerup radar se ha activado correctamente
-        assertTrue(jugadorMock.getTablero().getRadarActivo());
+        // Verifico que se llamó al método setRadarActivo(true)
+        Mockito.verify(tableroMock).setRadarActivo(true);
+
     }
 }
+
