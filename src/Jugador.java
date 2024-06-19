@@ -74,7 +74,8 @@ public class Jugador {
         PowerUpFactory fabricaPU = new PowerUpFactory();
 
         if(contAciertoRacha == 5){
-            Scanner scanner = new Scanner(System.in);
+            Scanear scanear = Scanear.getInstance();
+            Scanner scanner = scanear.getScanner();
             System.out.println("¡Felicidades 5 aciertos seguidos!, te has ganado un power up, elige uno de los siguientes: ");
             System.out.println("1. Shield   2. DisparoDoble");
             int opcion = scanner.nextInt();
@@ -89,14 +90,16 @@ public class Jugador {
         }
 
         if(contAciertoRacha == 7){
-            Scanner scanner = new Scanner(System.in);
+            Scanear scanear = Scanear.getInstance();
+            Scanner scanner = scanear.getScanner();
             System.out.println("¡No paras! ¡7 aciertos seguidos!, te has ganado un power up, podras revivir un barco hundido");
             addPowerUp(fabricaPU.crearPowerUp("Revivir"));
             contAciertoRacha = 0;
         }
 
         if(contAguasRacha == 5){
-            Scanner scanner = new Scanner(System.in);
+            Scanear scanear = Scanear.getInstance();
+            Scanner scanner = scanear.getScanner();
             System.out.println("No te precupes, te daremos una ayuda, ahora tienes un radar! revelera una posicion aleatoria de un barco enemigo");
             addPowerUp(fabricaPU.crearPowerUp("Radar"));
             contAguasRacha = 0;
@@ -108,20 +111,33 @@ public class Jugador {
      * Crea y coloca las naves en el tablero
      */
     public void crearYColocarNaves() {
+
         System.out.println("Colocando submarino - 2 casillas");
-        tablero.colocarNave(new Submarino());
+        boolean v = askVerticalidad();
+        while(!tablero.colocarNave(new Submarino(v))){
+            System.out.println("Reingrese coordenadas");
+        }
         tablero.mostrarTablero();
 
         System.out.println("Colocando buque - 4 casillas");
-        tablero.colocarNave(new Buque());
+        v= askVerticalidad();
+        while(!tablero.colocarNave(new Buque(v))){
+            System.out.println("Reingrese coordenadas");
+        }
         tablero.mostrarTablero();
 
         System.out.println("Colocando portaaviones - 5 casillas");
-        tablero.colocarNave(new Portaaviones());
+        v= askVerticalidad();
+        while(!tablero.colocarNave(new Portaaviones(v))){
+            System.out.println("Reingrese coordenadas");
+        }
         tablero.mostrarTablero();
 
         System.out.println("Colocando acorazado - 6 casillas");
-        tablero.colocarNave(new Acorazado());
+        v= askVerticalidad();
+        while(!tablero.colocarNave(new Acorazado(v))){
+            System.out.println("Reingrese coordenadas");
+        }
         tablero.mostrarTablero();
 
     }
@@ -171,6 +187,21 @@ public class Jugador {
             s+=("[ "+powerUp.getNombre()+ "] ");
         }
         return s;
+    }
+
+    /**
+     * Pregunta al usuario si desea que la nave sea vertical
+     * @return true si la nave es vertical, false si no
+     */
+    public boolean askVerticalidad(){
+        Scanear scanear = Scanear.getInstance();
+        Scanner scanner = scanear.getScanner();
+        String input;
+        do {
+            System.out.println("Desea que la nave sea vertical? (Y: si, N: no)");
+            input = scanner.next();
+        } while (!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N"));
+        return input.equalsIgnoreCase("Y");
     }
 
     public Jugador getOponente() {

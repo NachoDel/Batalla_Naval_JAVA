@@ -21,24 +21,12 @@ public class Nave {
     public Nave(String tipo, int vida) {
         this.tipo = tipo;
         this.vida = vida;
-        vertical = askVerticalidad();
+        vertical = true;
         estaViva = true;
         shield = false;
     }
 
-    /**
-     * Pregunta al usuario si desea que la nave sea vertical
-     * @return true si la nave es vertical, false si no
-     */
-    private boolean askVerticalidad(){
-        Scanner scanner = new Scanner(System.in);
-        String input;
-        do {
-            System.out.println("Desea que la nave sea vertical? (Y: si, N: no)");
-            input = scanner.next();
-        } while (!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N"));
-        return input.equalsIgnoreCase("Y");
-    }
+
 
     public void Revive(){
         estaViva = true;

@@ -10,7 +10,8 @@ public abstract class Menu {
         System.out.println("1. Iniciar Juego");
         System.out.println("2. Salir");
 
-        Scanner scanner = new Scanner(System.in);
+        Scanear scanear = Scanear.getInstance();
+        Scanner scanner = scanear.getScanner();
         System.out.print("Elija una opcion: ");
         int n = scanner.nextInt();
         return n;
