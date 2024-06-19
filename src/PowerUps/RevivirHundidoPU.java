@@ -22,7 +22,8 @@ public class RevivirHundidoPU extends PowerUp {
             System.out.println("No hay barcos hundidos para revivir");
             System.out.println("Añadiendo un nuevo submarino");
             cantidadBarcos++;
-            Nave submarino = new Submarino(false);
+            boolean v = jugador.askVerticalidad();
+            Nave submarino = new Submarino(v);
             jugador.getTablero().colocarNave(submarino);
             return;
         }

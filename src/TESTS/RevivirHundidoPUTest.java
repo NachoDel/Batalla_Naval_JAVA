@@ -3,15 +3,19 @@ package src.TESTS;
 import src.Jugador;
 import src.Naves.Submarino;
 import src.Tableros.Coordenada;
+import src.Tableros.Tablero;
 import src.PowerUps.RevivirHundidoPU;
 import src.PowerUps.PowerUpFactory;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.mockito.Mock;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.ByteArrayInputStream;
-import java.util.Scanner;
+import static org.mockito.Mockito.*;
 
 public class RevivirHundidoPUTest{
+
 
     //Caso nave hundida
     @Test
@@ -28,10 +32,10 @@ public class RevivirHundidoPUTest{
         jugadorMock.addPowerUp(revivirMock);
         //---------------------------------------------
         //Mockeo de la entrada del usuario
-        //String simulatedInput = "n\n1\n0\n"; NO LO PUEDO USAR, YA QUE ASKVERTICALIDAD ME RESETEA
-                                               //LA SIMULACION DE LOS IMPUTS, CAMBIE TMB LA APARICION DE SUBMARINO EN POWERUP
-                                               //LO INSTA SETIE EN VERTICAL:FALSE
-        String simulatedInput = "1\n0\n";
+        String simulatedInput = "n\n1\n0\n"; //NO LO PUEDO USAR, YA QUE ASKVERTICALIDAD ME RESETEA
+        //LA SIMULACION DE LOS IMPUTS, CAMBIE TMB LA APARICION DE SUBMARINO EN POWERUP
+        //LO INSTA SETIE EN VERTICAL:FALSE
+        //String simulatedInput = "1\n0\n";
         ByteArrayInputStream input = new ByteArrayInputStream(simulatedInput.getBytes());
         System.setIn(input);
         //---------------------------------------------
@@ -91,7 +95,4 @@ public class RevivirHundidoPUTest{
 
 
     }
-
-
-
 }
