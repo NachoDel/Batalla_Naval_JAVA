@@ -64,11 +64,11 @@ public class RevivirHundidoPUTest{
         Coordenada coordMock = new Coordenada(0, 0);
         jugadorMock.getTablero().rellenar(new Submarino(false), coordMock); //Coloca el submarino en la coordenada (0,0)
         Coordenada coordMock2 = new Coordenada(1, 0);
-        jugadorMock.getTablero().rellenar(new Submarino(false), coordMock2); //Coloca el submarino en la coordenada (0,0)
+        jugadorMock.getTablero().rellenar(new Submarino(false), coordMock2); //Coloca el submarino en la coordenada (1,0)
         Coordenada coordMock3 = new Coordenada(2, 0);
-        jugadorMock.getTablero().rellenar(new Submarino(false), coordMock3); //Coloca el submarino en la coordenada (0,0)
+        jugadorMock.getTablero().rellenar(new Submarino(false), coordMock3); //Coloca el submarino en la coordenada (2,0)
         Coordenada coordMock4 = new Coordenada(3, 0);
-        jugadorMock.getTablero().rellenar(new Submarino(false), coordMock4); //Coloca el submarino en la coordenada (0,0)
+        jugadorMock.getTablero().rellenar(new Submarino(false), coordMock4); //Coloca el submarino en la coordenada (3,0)
         //---------------------------------------------
         //Mockeo del powerUp
         PowerUpFactory factoryMock = new PowerUpFactory();
