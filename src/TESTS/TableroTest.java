@@ -133,5 +133,31 @@ public class TableroTest {
 
     }
 
+    @Test
+    public void getNaveEnCoordenada(){ //obtener nave en coordenada que si esta
+        String simulatedInput = "1\n2\n";
+        ByteArrayInputStream in = new ByteArrayInputStream(simulatedInput.getBytes());
+        System.setIn(in);
+        //colocamos nave en 3,3
+        tablero.colocarNave(buque);
+
+        //obtenemos nave en 3,3
+        Coordenada coordenada = new Coordenada(1,2);
+        Nave nave = tablero.getNaveEnCoordenada(coordenada);
+        //deberia ser un buque
+        Assertions.assertEquals(buque, nave);
+
+    }
+
+    @Test
+    public void getNaveEnCoordenada2(){ //obtener nave en coordenada que no esta
+        //obtenemos nave en 3,3
+        Coordenada coordenada = new Coordenada(1,2);
+        Nave nave = tablero.getNaveEnCoordenada(coordenada);
+        //deberia ser un buque
+        Assertions.assertNull(nave);
+
+    }
+
 
 }
