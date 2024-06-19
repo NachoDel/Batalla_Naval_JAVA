@@ -63,6 +63,7 @@ public class Tablero {
             } while (!validarCoordenadas(coordenada));
         }catch (InputMismatchException e){
             System.out.println("Error, debe ingresar un numero entero");
+            scanner.nextLine();
             return pedirCoordenadas();
         }
 
