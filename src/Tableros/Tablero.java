@@ -346,10 +346,18 @@ public class Tablero {
         for (int i = -1; i < filas; i++) {
             for (int j = -1; j < columnas; j++) {
                 if (i == -1) {
-                    System.out.print(j + "  ");
+                    if (j < 9 && j != -1) {
+                        System.out.print(j + "  ");
+                    } else {
+                        System.out.print(j + " ");
+                    }
                 } else {
                     if (j == -1)
-                        System.out.print(i + "   ");
+                        if (i > 9) {
+                            System.out.print(i + " ");
+                        } else {
+                            System.out.print(i + "  ");
+                        }
                     else {
                         if (celdaOcupada(i, j)) {
                             System.out.print(matriz[i][j].getTipo().toUpperCase().charAt(0) + "  ");

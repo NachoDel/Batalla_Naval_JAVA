@@ -78,7 +78,16 @@ public class Jugador {
             Scanner scanner = scanear.getScanner();
             System.out.println("¡Felicidades 5 aciertos seguidos!, te has ganado un power up, elige uno de los siguientes: ");
             System.out.println("1. Shield   2. DisparoDoble");
-            int opcion = scanner.nextInt();
+            int opcion = 0;
+            do {
+                try {
+                    opcion = scanner.nextInt();
+                } catch (Exception e) {
+                    System.out.println("Opcion no valida, intente de nuevo");
+                    scanner.next(); // consume the invalid input
+                }
+            } while (opcion != 1 && opcion != 2);
+
             switch (opcion){
                 case 1:
                     addPowerUp(fabricaPU.crearPowerUp("Shield"));
@@ -90,16 +99,12 @@ public class Jugador {
         }
 
         if(contAciertoRacha == 7){
-            Scanear scanear = Scanear.getInstance();
-            Scanner scanner = scanear.getScanner();
             System.out.println("¡No paras! ¡7 aciertos seguidos!, te has ganado un power up, podras revivir un barco hundido");
             addPowerUp(fabricaPU.crearPowerUp("Revivir"));
             contAciertoRacha = 0;
         }
 
         if(contAguasRacha == 5){
-            Scanear scanear = Scanear.getInstance();
-            Scanner scanner = scanear.getScanner();
             System.out.println("No te precupes, te daremos una ayuda, ahora tienes un radar! revelera una posicion aleatoria de un barco enemigo");
             addPowerUp(fabricaPU.crearPowerUp("Radar"));
             contAguasRacha = 0;

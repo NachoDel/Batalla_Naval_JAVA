@@ -16,12 +16,19 @@ public class Main {
             case 1:
                 Scanear scanear = Scanear.getInstance();
                 Scanner scanner = scanear.getScanner();
-                int n;
+
+                //pedimos tamaño del tablero al usuario validando que sea mayor o igual a 10 y sea un numero
+                int n=0;
                 do {
-                    System.out.println("Ingrese tamanio del tablero: ");
-                    n = scanner.nextInt();
-                    if (n < 10)
-                        System.out.println("El tamanio del tablero debe ser mayor o igual a 10");
+                    System.out.print("Ingrese tamanio del tablero: ");
+                    try {
+                        n = scanner.nextInt();
+                        if (n < 10)
+                            System.out.println("El tamanio del tablero debe ser mayor o igual a 10");
+                    }catch (Exception e) {
+                        System.out.println("Ingrese un numero mayor a 10");
+                        scanner.next();
+                    }
                 } while (n < 10);
 
 
