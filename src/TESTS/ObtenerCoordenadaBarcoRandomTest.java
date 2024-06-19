@@ -1,11 +1,10 @@
+package src.TESTS;
+
+import src.Jugador;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
-
-package src.TESTS;
-
-
 
 public class ObtenerCoordenadaBarcoRandomTest {
 
