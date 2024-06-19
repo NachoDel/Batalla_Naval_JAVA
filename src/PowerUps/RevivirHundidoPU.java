@@ -33,28 +33,32 @@ public class RevivirHundidoPU extends PowerUp {
                 switch (barco.getTipo()) {
                     case "Submarino" -> {
                         System.out.println("Reviviendo submarino");
-                        Nave submarino = new Submarino(false);
+                        boolean v = jugador.askVerticalidad();
+                        Nave submarino = new Submarino(v);
                         jugador.getTablero().colocarNave(submarino);
                         System.out.println("Submarino revivido");
                         return;
                     }
                     case "Acorazado" -> {
                         System.out.println("Reviviendo Acorazado");
-                        Nave acorazado = new Acorazado();
+                        boolean v = jugador.askVerticalidad();
+                        Nave acorazado = new Acorazado(v);
                         jugador.getTablero().colocarNave(acorazado);
                         System.out.println("Acorazado revivido");
                         return;
                     }
                     case "Buque" -> {
                         System.out.println("Reviviendo Buque");
-                        Nave buque = new Buque();
+                        boolean v = jugador.askVerticalidad();
+                        Nave buque = new Buque(v);
                         jugador.getTablero().colocarNave(buque);
                         System.out.println("Buque revivido");
                         return;
                     }
                     default -> {
                         System.out.println("Reviviendo Porta aviones");
-                        Nave portaAviones = new Portaaviones();
+                        boolean v = jugador.askVerticalidad();
+                        Nave portaAviones = new Portaaviones(v);
                         jugador.getTablero().colocarNave(portaAviones);
                         System.out.println("Porta aviones revivido");
                     }

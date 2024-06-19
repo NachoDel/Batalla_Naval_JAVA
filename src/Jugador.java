@@ -109,19 +109,23 @@ public class Jugador {
      */
     public void crearYColocarNaves() {
         System.out.println("Colocando submarino - 2 casillas");
-        tablero.colocarNave(new Submarino());
+        boolean v = askVerticalidad();
+        tablero.colocarNave(new Submarino(v));
         tablero.mostrarTablero();
 
         System.out.println("Colocando buque - 4 casillas");
-        tablero.colocarNave(new Buque());
+        v= askVerticalidad();
+        tablero.colocarNave(new Buque(v));
         tablero.mostrarTablero();
 
         System.out.println("Colocando portaaviones - 5 casillas");
-        tablero.colocarNave(new Portaaviones());
+        v= askVerticalidad();
+        tablero.colocarNave(new Portaaviones(v));
         tablero.mostrarTablero();
 
         System.out.println("Colocando acorazado - 6 casillas");
-        tablero.colocarNave(new Acorazado());
+        v= askVerticalidad();
+        tablero.colocarNave(new Acorazado(v));
         tablero.mostrarTablero();
 
     }
@@ -171,6 +175,20 @@ public class Jugador {
             s+=("[ "+powerUp.getNombre()+ "] ");
         }
         return s;
+    }
+
+    /**
+     * Pregunta al usuario si desea que la nave sea vertical
+     * @return true si la nave es vertical, false si no
+     */
+    public boolean askVerticalidad(){
+        Scanner scanner = new Scanner(System.in);
+        String input;
+        do {
+            System.out.println("Desea que la nave sea vertical? (Y: si, N: no)");
+            input = scanner.next();
+        } while (!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N"));
+        return input.equalsIgnoreCase("Y");
     }
 
     public Jugador getOponente() {
