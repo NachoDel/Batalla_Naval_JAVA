@@ -51,6 +51,7 @@ public class Tablero {
         Coordenada coordenada = new Coordenada();
         Scanear scanear = Scanear.getInstance();
         Scanner scanner = scanear.getScanner();
+
         try{
             do {
                 System.out.print("Ingrese fila: ");
@@ -63,6 +64,7 @@ public class Tablero {
             } while (!validarCoordenadas(coordenada));
         }catch (InputMismatchException e){
             System.out.println("Error, debe ingresar un numero entero");
+            scanner.nextLine();
             return pedirCoordenadas();
         }
 
