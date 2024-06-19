@@ -10,7 +10,7 @@ import src.Naves.Submarino;
 public class RevivirHundidoPU extends PowerUp {
 
     private int cantidadBarcos = 4; //Se debe actualizar en caso de cambiar la cantidad
-                                    //de barcos en el juego
+    //de barcos en el juego
 
     public RevivirHundidoPU(){
         nombre = "Revivir";
@@ -21,11 +21,12 @@ public class RevivirHundidoPU extends PowerUp {
         if (jugador.getTablero().getNavesConVida() == cantidadBarcos) {
             System.out.println("No hay barcos hundidos para revivir");
             System.out.println("Añadiendo un nuevo submarino");
-            cantidadBarcos++;
-            Nave submarino = new Submarino(false);
+            boolean v = jugador.askVerticalidad();
+            Nave submarino = new Submarino(v);
             while(!jugador.getTablero().colocarNave(submarino)){
                 System.out.println("Reingrese coordenadas");
             }
+            cantidadBarcos++;
             return;
         }
         System.out.println("Reviviendo a un barco hundido al azar");
