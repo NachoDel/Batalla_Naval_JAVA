@@ -38,16 +38,18 @@ public class Main {
                 j1.setOponente(j2);
                 j2.setOponente(j1);
 
+                System.out.println("\u001B[33m"+ "COLOCANDO NAVES " + j1.getNombre()+"\u001B[0m");
                 j1.getTablero().mostrarTablero();
                 System.out.println("Colocando naves de " + j1.getNombre());
                 j1.crearYColocarNaves();
                 System.out.println("\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n");
 
+                System.out.println("\u001B[36m"+ "COLOCANDO NAVES " + j2.getNombre()+"\u001B[0m");
                 j2.getTablero().mostrarTablero();
                 System.out.println("Colocando naves de " + j2.getNombre());
                 j2.crearYColocarNaves();
 
-                System.out.println("\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n");
+                System.out.println("\n" + "\n" + "\n" + "\n" +"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n");
 
                 System.out.println("Comienza disparando " + j1.getNombre());
 
@@ -59,10 +61,14 @@ public class Main {
                         while(!j1.getPowerUps().isEmpty()) {
                             System.out.println("Tienes los siguientes powerUps disponibles, deseas usar alguno? Y: si, N: no");
                             System.out.println(j1.powerUpsToString());
-                            input = scanner.next();
+                            input = scanner.nextLine();
+                            while (!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N")) {
+                                System.out.print("Ingrese Y o N: ");
+                                input = scanner.nextLine();
+                            }
                             if (input.equalsIgnoreCase("Y")) {
                                 System.out.println("Cual desea usar?");
-                                input = scanner.next();
+                                input = scanner.nextLine();
                                 j1.activarPowerUp(input);
                             } else {
                                 break;

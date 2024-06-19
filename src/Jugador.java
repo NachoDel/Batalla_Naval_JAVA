@@ -101,12 +101,26 @@ public class Jugador {
         if(contAciertoRacha == 7){
             System.out.println("¡No paras! ¡7 aciertos seguidos!, te has ganado un power up, podras revivir un barco hundido");
             addPowerUp(fabricaPU.crearPowerUp("Revivir"));
+
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             contAciertoRacha = 0;
         }
 
         if(contAguasRacha == 5){
             System.out.println("No te precupes, te daremos una ayuda, ahora tienes un radar! revelera una posicion aleatoria de un barco enemigo");
             addPowerUp(fabricaPU.crearPowerUp("Radar"));
+
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             contAguasRacha = 0;
         }
     }
