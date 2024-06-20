@@ -115,13 +115,15 @@ public class Main {
                 }
                 if (j2.getTablero().getNavesConVida() == 0) {
                     System.out.println("Gano " + j1.getNombre());
+                    System.out.println("Gracias por jugar");
                 } else {
                     System.out.println("Gano " + j2.getNombre());
+                    System.out.println("Gracias por jugar");
                 }
                 break;
-
-
-
+            case 2:
+                System.out.println("Gracias por jugar");
+                break;
             default:
                 break;
         }
