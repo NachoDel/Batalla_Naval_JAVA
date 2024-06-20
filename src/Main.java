@@ -16,12 +16,19 @@ public class Main {
             case 1:
                 Scanear scanear = Scanear.getInstance();
                 Scanner scanner = scanear.getScanner();
-                int n;
+
+                //pedimos tamaño del tablero al usuario validando que sea mayor o igual a 10 y sea un numero
+                int n=0;
                 do {
-                    System.out.println("Ingrese tamanio del tablero: ");
-                    n = scanner.nextInt();
-                    if (n < 10)
-                        System.out.println("El tamanio del tablero debe ser mayor o igual a 10");
+                    System.out.print("Ingrese tamanio del tablero: ");
+                    try {
+                        n = scanner.nextInt();
+                        if (n < 10)
+                            System.out.println("El tamanio del tablero debe ser mayor o igual a 10");
+                    }catch (Exception e) {
+                        System.out.println("Ingrese un numero mayor a 10");
+                        scanner.next();
+                    }
                 } while (n < 10);
 
 
@@ -31,16 +38,18 @@ public class Main {
                 j1.setOponente(j2);
                 j2.setOponente(j1);
 
+                System.out.println("\u001B[33m"+ "COLOCANDO NAVES " + j1.getNombre()+"\u001B[0m");
                 j1.getTablero().mostrarTablero();
                 System.out.println("Colocando naves de " + j1.getNombre());
                 j1.crearYColocarNaves();
                 System.out.println("\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n");
 
+                System.out.println("\u001B[36m"+ "COLOCANDO NAVES " + j2.getNombre()+"\u001B[0m");
                 j2.getTablero().mostrarTablero();
                 System.out.println("Colocando naves de " + j2.getNombre());
                 j2.crearYColocarNaves();
 
-                System.out.println("\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n");
+                System.out.println("\n" + "\n" + "\n" + "\n" +"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n");
 
                 System.out.println("Comienza disparando " + j1.getNombre());
 
@@ -52,10 +61,14 @@ public class Main {
                         while(!j1.getPowerUps().isEmpty()) {
                             System.out.println("Tienes los siguientes powerUps disponibles, deseas usar alguno? Y: si, N: no");
                             System.out.println(j1.powerUpsToString());
-                            input = scanner.next();
+                            input = scanner.nextLine();
+                            while (!input.equalsIgnoreCase("Y") && !input.equalsIgnoreCase("N")) {
+                                System.out.print("Ingrese Y o N: ");
+                                input = scanner.nextLine();
+                            }
                             if (input.equalsIgnoreCase("Y")) {
                                 System.out.println("Cual desea usar?");
-                                input = scanner.next();
+                                input = scanner.nextLine();
                                 j1.activarPowerUp(input);
                             } else {
                                 break;
@@ -64,9 +77,13 @@ public class Main {
 
                     } while (j1.disparar(j2));
 
+                    if(j2.getTablero().getNavesConVida() == 0){
+                        break;
+                    }
+
                     String enter;
                     System.out.println("Presiona Enter para continuar...");
-                    enter = scanner.next();
+                    enter = scanner.nextLine();
                     System.out.println("\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n");
 
                     do {
@@ -87,89 +104,28 @@ public class Main {
                         }
                     } while (j2.disparar(j1));
 
+                    if(j1.getTablero().getNavesConVida() == 0){
+                        break;
+                    }
+
                     System.out.println("Presiona Enter para continuar...");
-                    enter = scanner.next();
+                    enter = scanner.nextLine();
                     System.out.println("\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n"+"\n" + "\n" + "\n" + "\n");
 
                 }
                 if (j2.getTablero().getNavesConVida() == 0) {
                     System.out.println("Gano " + j1.getNombre());
-                    imprimirFinal(j1, j2);
+                    System.out.println("Gracias por jugar");
                 } else {
                     System.out.println("Gano " + j2.getNombre());
-                    imprimirFinal(j1, j2);
+                    System.out.println("Gracias por jugar");
                 }
                 break;
-
             case 2:
-                //para simular y debuguear
-                Jugador j3 = new Jugador("Jugador 1", 10, 10);
-                Jugador j4 = new Jugador("Jugador 2", 10, 10);
-
-                Nave subma = new Submarino(true);
-                Coordenada c = new Coordenada(0, 0);
-                j3.getTablero().rellenar(subma, c);
-
-                Nave buque = new Buque(true);
-                c = new Coordenada(c.getFila(), c.getColumna() + 1);
-                j3.getTablero().rellenar(buque, c);
-
-                Nave subma2 = new Submarino(false);
-                Coordenada c2 = new Coordenada(0, 0);
-                j4.getTablero().rellenar(subma2, c2);
-
-                Nave buque2 = new Buque(false);
-                c2 = new Coordenada(c2.getFila() + 1, c2.getColumna());
-                j4.getTablero().rellenar(buque2, c2);
-
-
-                PowerUpFactory fabricaPowerUp = new PowerUpFactory();
-
-                j3.getTablero().mostrarTablero();
-                System.out.println(" ");
-                j4.getTablero().mostrarTablero();
-
-                j3.disparar(j4);
-                j4.getTablero().mostrarOculto();
-
-                j3.disparar(j4);
-                j4.getTablero().mostrarOculto();
-
-                j3.addPowerUp(fabricaPowerUp.crearPowerUp("DoubleShot"));
-                j3.activarPowerUp("DoubleShot");
-
-                j3.disparar(j4);
-                j4.getTablero().mostrarOculto();
-
-                j3.disparar(j4);
-                j4.getTablero().mostrarOculto();
-
-
-
-
-                j4.getTablero().mostrarTablero();
-                j3.disparar(j4);
-                j4.getTablero().mostrarOculto();
-
-                j3.disparar(j4);
-                j4.getTablero().mostrarOculto();
-
-                j3.disparar(j4);
-                j4.getTablero().mostrarOculto();
-
-                j3.disparar(j4);
-                j4.getTablero().mostrarOculto();
-
-                imprimirFinal(j3, j4);
-
+                System.out.println("Gracias por jugar");
+                break;
             default:
                 break;
         }
-    }
-    private static void imprimirFinal(Jugador jug1, Jugador jug2){
-        System.out.println("Gracias por jugar");
-        System.out.println("Imprimiendo estadisticas");
-        jug1.imprimirEstadisticas();
-        jug2.imprimirEstadisticas();
     }
 }

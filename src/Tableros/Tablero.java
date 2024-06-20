@@ -51,6 +51,7 @@ public class Tablero {
         Coordenada coordenada = new Coordenada();
         Scanear scanear = Scanear.getInstance();
         Scanner scanner = scanear.getScanner();
+
         try{
             do {
                 System.out.print("Ingrese fila: ");
@@ -297,9 +298,6 @@ public class Tablero {
     public void setRadarActivo(boolean activo){
         this.radarActivo = activo;
     }
-    public boolean getRadarActivo(){
-        return this.radarActivo;
-    }
     public void setCoordenadaAyudaRadar(Coordenada coordenada) {
         this.coordenadaAyudaRadar = coordenada;
     }
@@ -348,10 +346,18 @@ public class Tablero {
         for (int i = -1; i < filas; i++) {
             for (int j = -1; j < columnas; j++) {
                 if (i == -1) {
-                    System.out.print(j + "  ");
+                    if (j < 9 && j != -1) {
+                        System.out.print(j + "  ");
+                    } else {
+                        System.out.print(j + " ");
+                    }
                 } else {
                     if (j == -1)
-                        System.out.print(i + "   ");
+                        if (i > 9) {
+                            System.out.print(i + " ");
+                        } else {
+                            System.out.print(i + "  ");
+                        }
                     else {
                         if (celdaOcupada(i, j)) {
                             System.out.print(matriz[i][j].getTipo().toUpperCase().charAt(0) + "  ");
@@ -375,31 +381,54 @@ public class Tablero {
         for (int i = -1; i < filas; i++) {
             for (int j = -1; j < columnas; j++) {
                 if (i == -1) {
-                    System.out.print(j + "  ");
+                    if (j < 9 && j != -1) {
+                        System.out.print(j + "  ");
+                    } else {
+                        System.out.print(j + " ");
+                    }
                 } else {
                     if (j == -1)
-                        System.out.print(i + "   ");
+                        if (i > 9) {
+                            System.out.print(i + " ");
+                        } else {
+                            System.out.print(i + "  ");
+                        }
                     else{
                         Coordenada coord = new Coordenada(i,j);
                         if (coord.equals(getCoordenadaAyudaRadar()) && radarActivo) {
+
                             System.out.print("\033[32m" + "A" + "\033[0m" + "  "); // Imprime 'A' en color verde
+
                             setRadarActivo(false);
                     }
                         else if (celdaOcupada(i, j)){
                             if(matriz[i][j] instanceof Agua){
+
                                 System.out.print("\u001B[34m"+ "0" +"\u001B[0m"+ "  ");
+
                             }
                             else if (matriz[i][j] instanceof Impacto) {
                                 if (getNaveEnCoordenada(new Coordenada(i, j)).getEstaViva()) {
+
                                     System.out.print(matriz[i][j].getTipo() + "  ");
+
+
                                 } else {
+
                                     System.out.print("\u001B[31m" + getNaveEnCoordenada(new Coordenada(i, j)).getTipo().toUpperCase().charAt(0) + "\u001B[0m" + "  ");
+
+
                                 }
                             }else{
+
                                 System.out.print("." + "  ");
+
+
                             }
                         }else{
+
                             System.out.print("." + "  ");
+
                         }
                     }
                 }

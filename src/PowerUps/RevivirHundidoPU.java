@@ -10,7 +10,7 @@ import src.Naves.Submarino;
 public class RevivirHundidoPU extends PowerUp {
 
     private int cantidadBarcos = 4; //Se debe actualizar en caso de cambiar la cantidad
-                                    //de barcos en el juego
+    //de barcos en el juego
 
     public RevivirHundidoPU(){
         nombre = "Revivir";
